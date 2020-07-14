@@ -1,4 +1,6 @@
 
 *.xml
+*.xml
+Bank-master/BankP/BankP/out/production/BankP/bank/java/com/github/mfathi91/time/PersianChronology$1.class
 *.class
 Bank-master/BankP/gitignore
