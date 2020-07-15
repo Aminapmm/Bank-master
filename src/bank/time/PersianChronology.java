@@ -84,7 +84,7 @@ public final class PersianChronology extends AbstractChronology {
      * Gets the ID of the chronology.
      * <p>
      * The ID uniquely identifies the {@code Chronology}. It can be used to
-     * lookup the {@code Chronology} using {@link #of(String)}.
+     * lookup the {@code Chronology} using .
      *
      * @return the chronology ID, non-null
      * @see #getCalendarType()
@@ -99,7 +99,7 @@ public final class PersianChronology extends AbstractChronology {
      * <p>
      * The calendar type is an identifier defined by the
      * <em>Unicode Locale Data Markup Language (LDML)</em> specification.
-     * It can be used to lookup the {@code Chronology} using {@link #of(String)}.
+     * It can be used to lookup the {@code Chronology} using .
      *
      * @return the calendar system type; non-null if the calendar has
      * a standard type, otherwise null

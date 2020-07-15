@@ -14,4 +14,9 @@ public class Transfer extends TRANSACTION {
 	void Backup() {
 		//TODO
 	}
+
+	@Override
+	public void Print_Receipt(){
+
+	}
 }

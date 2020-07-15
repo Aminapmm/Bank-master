@@ -4,6 +4,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 
 import bank.time.*;
 import java.time.LocalTime;
+import java.util.Scanner;
 
 
 public class BankAccount {
@@ -17,10 +18,10 @@ public class BankAccount {
     private String Accountype;
     private int RamzeAvval;
     private int RamzeDovom;
-    private double Amount;
+    private int Amount;
     private double Interestrate;
     private PersianDate RegistrationDate;
-
+    static Scanner input = new Scanner(System.in);
 
     private BankAccount(builder b) {
 
@@ -54,7 +55,7 @@ public class BankAccount {
 
             this.RamzeDovom = b.RamzeDovom;
 
-                                         }
+    }
 
 
     public String getFirstname () {
@@ -102,7 +103,7 @@ public class BankAccount {
 
 
 
-    public double getAmount () {
+    public int getAmount () {
         return this.Amount;
     }
 
@@ -135,7 +136,7 @@ public class BankAccount {
         private String Accountype;
         private int RamzeAvval;
         private int RamzeDovom;
-        private double Amount;
+        private int Amount;
         private double Interestrate;
 
 
@@ -197,7 +198,7 @@ public class BankAccount {
 
 
 
-        public builder setAmount(double Amount) {
+        public builder setAmount(int Amount) {
             this.Amount = Amount;
             return this;
         }
@@ -235,7 +236,6 @@ public class BankAccount {
 
 
 
-
         public void GenerateRamzeDovom() {
             this.RamzeDovom=Integer.parseInt(RandomStringUtils.randomNumeric(8));
         }
@@ -244,23 +244,34 @@ public class BankAccount {
         public BankAccount getAccount(){return new BankAccount(this);}
 
 
-
     }
 
 
-
-
-
-
-        public static  void Transfer(long Source,int ramzedovom,long Destination,double amount){
+        public static void Transfer(long Source,int ramzedovom,long Destination,int amount){
         //TODO
-            boolean Status=false;
+            boolean status=false;
             boolean auth=false;
+            int current_amount;
             auth=Query.OnlineAuthentication(Source,ramzedovom);
                 try {
-                    if (auth == true && amount<Query.ShowInformation(Source).getInt("amount")) {
-                        if (Query.ShowInformation(Destination).isFirst() == true) {
+                    if (auth == true) {
+
+                         current_amount = Query.ShowInformation(Source).getInt("amount");
+
+                        if (Query.ShowInformation(Destination).isFirst() == true&&amount<current_amount) {
                             System.out.printf("Are You Sure that you want to transfer  %s  to \n %s  %s's Account?",amount,Query.ShowInformation(Destination).getString("firstname"),Query.ShowInformation(Destination).getString("lastname"));
+                            String Decision= input.next().toUpperCase();
+                            if(Decision.equals("YES")){
+                                //TODO UPDATE AMOUNT OF SOURCE AND DESTINATION ACCOUNT AND RETURN A RECEIPT ---------> DONE.
+                                current_amount=current_amount-amount;
+                                Query.UpdateRecords(Source,12,Integer.toString(current_amount));
+                               // Query.UpdateRecords(1000,12,"45500");
+                                current_amount=Query.ShowInformation(Destination).getInt("amount")+amount;
+                                Query.UpdateRecords(Destination,12,Integer.toString(current_amount));
+                              //  Query.UpdateRecords(2000,12,"12500");
+                               Deposit receipt = new Deposit(Source,amount,"Success");
+                                receipt.Print_Receipt();
+                            }
                         }
                     }
                 }
@@ -272,12 +283,6 @@ public class BankAccount {
 
         }
 
-        public void Receipt(int Amount,String Type,long source,long destination){
-            LocalTime time = LocalTime.now();
-            PersianDate date=PersianDate.now();
-            System.out.printf("account number:\n");
-
-        }
 
     public static void main(String[] args) {
 

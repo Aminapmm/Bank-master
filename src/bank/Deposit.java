@@ -6,12 +6,10 @@ import java.io.Writer;
 
 
 public class Deposit extends TRANSACTION {
-	long acnumber;
-
-	Deposit(long ACCOUNTNUMBER, double AMOUNT, String DESCRIPTION) {
-		super(ACCOUNTNUMBER, AMOUNT, DESCRIPTION);
 
 
+	Deposit(long ACCOUNTNUMBER, double AMOUNT,String Description) {
+		super(ACCOUNTNUMBER, AMOUNT);
 	}
 
 	@Override
@@ -28,6 +26,11 @@ public class Deposit extends TRANSACTION {
 		catch (Exception e){
 			System.out.println(e.getMessage());
 		}
+	}
+
+	@Override
+	public void Print_Receipt(){
+		System.out.printf("			Deposit Receipt\nAccountnumber: %d\nDepositor: %s\nDate: %s\nTime: %s\nAmount: %.0f\n",this.getACCOUNTNUMBER(),0,this.getReceiptDate(),this.getReceiptTime(),this.getAMOUNT());
 	}
 
 	public static void main(String[] args) {

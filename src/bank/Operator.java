@@ -3,7 +3,7 @@ package bank;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Scanner;
-import bank.java.com.github.mfathi91.time.PersianDate;
+import bank.time.*;
 
 public class Operator {
 
@@ -32,7 +32,7 @@ public class Operator {
         String accountype;
         // int ramzeavval;
         // int ramzedovom;
-        double amount;
+        int amount;
         double interestrate;
 
         BankAccount.builder Builder ;
@@ -78,7 +78,7 @@ public class Operator {
 
             System.out.println("Enter Your Amount:");
 
-            amount = input.nextDouble();
+            amount = input.nextInt();
 
 
             Builder.setFirstname(firstname);

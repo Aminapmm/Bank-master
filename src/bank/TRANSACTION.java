@@ -3,26 +3,30 @@ package bank;
 import java.sql.*;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import bank.java.com.github.mfathi91.time.*;
+import bank.time.*;
 
 abstract class TRANSACTION {
 
 	private long ACCOUNTNUMBER;
 	private double AMOUNT;
-	private String DESCRIPTION;
+	private String DESCRIPTION="";
 	private	String ReceiptTime;
 	private PersianDate ReceiptDate;
 
 	TRANSACTION(long ACCOUNTNUMBER,double AMOUNT,String DESCRIPTION)
 	{
+		this(ACCOUNTNUMBER,AMOUNT);
+		this.DESCRIPTION=DESCRIPTION;
+
+	}
+
+	TRANSACTION(long ACCOUNTNUMBER,double AMOUNT){
 		this.ReceiptDate=PersianDate.now();
 		this.ACCOUNTNUMBER=ACCOUNTNUMBER;
 		this.AMOUNT=AMOUNT;
-		this.DESCRIPTION=DESCRIPTION;
 		this.ReceiptDate=PersianDate.now();
 		DateTimeFormatter std=DateTimeFormatter.ofPattern("HH:mm:ss");
 		this.ReceiptTime=LocalTime.now().format(std);
-
 	}
 
 	public long getACCOUNTNUMBER(){
@@ -48,6 +52,7 @@ abstract class TRANSACTION {
 
 
 	abstract  void Backup();
+	abstract void Print_Receipt();
 
 
 

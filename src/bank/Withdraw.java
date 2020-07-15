@@ -11,4 +11,9 @@ public class Withdraw extends TRANSACTION {
 	void Backup() {
 		//TODO
 	}
+
+	@Override
+	public void Print_Receipt(){
+
+	}
 }
