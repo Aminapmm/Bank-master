@@ -1,9 +1,8 @@
 package bank;
-import bank.time.PersianDate;
 
+import javax.management.ServiceNotFoundException;
 import java.sql.*;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.util.concurrent.ExecutorService;
 
 import static java.lang.System.*;
 
@@ -18,9 +17,10 @@ private static Connection conn;
            Connection conn;
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Bankaccounts", "root", "13801380");
            // String query = "UPDATE CUSTOMERSINFO SET AMOUNT=? WHERE ACCOUNTNUMBER=1000";
-          // System.out.println(UpdateRecords(1000,12,"100000"));
+           //System.out.println(UpdateRecords(2000,12,"120000"));
+            UpdateRecords(20300,12,"1202000");
             //Query q = new Query();
-           UpdateRecords(2000,12,"60500");
+           //UpdateRecords(2000,12,"60500");
            // double current_amount = ShowInformation(1000).getDouble("amount");
             //pstmt.setDouble(1,current_amount-5000);
            // pstmt.execute();
@@ -111,7 +111,7 @@ private static Connection conn;
     return rs;
     }
 
-    public static  void UpdateRecords(long accountnumber,int field_index,String data){
+    public static void UpdateRecords(long accountnumber, int field_index, String data){
 //TODO:UPDATE ACCOUNTS INFO IN DATABASE LIKE CHANGE THE AMOUNT AFTER TRANSFER...OR DEPOSIT OR ...WITHDRAW
 
 
@@ -130,11 +130,11 @@ private static Connection conn;
 
             PreparedStatement pstmt = conn.prepareStatement(query);
 
-            switch (field_type) {
+             switch (field_type) {
                 case  12:
                     pstmt.setString(1, data);
                     pstmt.setDouble(2, accountnumber);
-                     pstmt.execute();
+                    pstmt.execute();
                     //System.out.println(status);
                     break;
                 case 1:
@@ -142,40 +142,44 @@ private static Connection conn;
                     pstmt.setDouble(2, accountnumber);
                      pstmt.execute();
                     //System.out.println(status);
-                    break;
+                   break;
                 case 91:
                     pstmt.setDate(1, Date.valueOf(data));
                     pstmt.setDouble(2, accountnumber);
-                    pstmt.execute();
+                     pstmt.execute();
                     // System.out.println(status);
-                    break;
+                   break;
                    case 4:
                     pstmt.setDouble(1, Integer.parseInt(data));
                     pstmt.setDouble(2, accountnumber);
-                    pstmt.execute();
-                    // System.out.println(status1);
+                       pstmt.executeUpdate();
+
+                    // System.out.println();
 
                        break;
                   case 5:
                     pstmt.setInt(1, Integer.parseInt(data));
                     pstmt.setDouble(2, accountnumber);
                     pstmt.execute();
-                    break;
+                   break;
 
 
                 case -5 :
                     pstmt.setInt(1, Integer.parseInt(data));
                     pstmt.setDouble(2, accountnumber);
-                     pstmt.execute();
+                    pstmt.execute();
                     // System.out.println(status);
-                    break;
+                 break;
+
+                 default:
+                     throw new ServiceNotFoundException();
             }
 
         }
         catch (Exception e){
             System.out.println(e.getMessage());
         }
-
+//return false;
     }
 
     public static void InsertRecords(){

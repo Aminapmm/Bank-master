@@ -8,7 +8,7 @@ import java.io.Writer;
 public class Deposit extends TRANSACTION {
 
 
-	Deposit(long ACCOUNTNUMBER, double AMOUNT,String Description) {
+	Deposit(long ACCOUNTNUMBER, int AMOUNT,String Description) {
 		super(ACCOUNTNUMBER, AMOUNT);
 	}
 

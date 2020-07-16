@@ -8,19 +8,19 @@ import bank.time.*;
 abstract class TRANSACTION {
 
 	private long ACCOUNTNUMBER;
-	private double AMOUNT;
+	private int AMOUNT;
 	private String DESCRIPTION="";
 	private	String ReceiptTime;
 	private PersianDate ReceiptDate;
 
-	TRANSACTION(long ACCOUNTNUMBER,double AMOUNT,String DESCRIPTION)
+	TRANSACTION(long ACCOUNTNUMBER,int AMOUNT,String DESCRIPTION)
 	{
 		this(ACCOUNTNUMBER,AMOUNT);
 		this.DESCRIPTION=DESCRIPTION;
 
 	}
 
-	TRANSACTION(long ACCOUNTNUMBER,double AMOUNT){
+	TRANSACTION(long ACCOUNTNUMBER,int AMOUNT){
 		this.ReceiptDate=PersianDate.now();
 		this.ACCOUNTNUMBER=ACCOUNTNUMBER;
 		this.AMOUNT=AMOUNT;
@@ -33,7 +33,7 @@ abstract class TRANSACTION {
 		return this.ACCOUNTNUMBER;
 	}
 
-	public double getAMOUNT() {
+	public int getAMOUNT() {
 		return this.AMOUNT;
 	}
 

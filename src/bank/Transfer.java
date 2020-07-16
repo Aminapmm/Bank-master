@@ -3,7 +3,7 @@ package bank;
 public class Transfer extends TRANSACTION {
 	private long Source=0;
 	private long Destination=0;
-	public Transfer(long ACCOUNTNUMBER, double AMOUNT, String DESCRIPTION,long Source,long Destination) {
+	public Transfer(long ACCOUNTNUMBER, int AMOUNT, String DESCRIPTION,long Source,long Destination) {
 
 		super(ACCOUNTNUMBER, AMOUNT, DESCRIPTION);
 		this.Source=Source;

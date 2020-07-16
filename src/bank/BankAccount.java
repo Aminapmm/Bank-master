@@ -283,6 +283,31 @@ public class BankAccount {
 
         }
 
+        public static void Withdraw(long accountnumber,int ramzeAvval,int amount){
+        //TODO:
+            try {
+
+                boolean auth = Query.Authentication(accountnumber, ramzeAvval);
+                Withdraw w;
+                int current_amount = Query.ShowInformation(accountnumber).getInt("Amount");
+
+                if(current_amount>=amount) {
+                    Query.UpdateRecords(accountnumber, 12, Integer.toString(current_amount - amount));
+                    current_amount-=amount;
+                    w = new Withdraw(accountnumber,current_amount,current_amount);
+                    w.Print_Receipt();
+                }
+            }
+            catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+        }
+
+        public static void Deposit(long Accountnumber,int Ramzeavval,int Amount){
+           boolean auth =  Query.Authentication(Accountnumber,Ramzeavval);
+
+        }
+
 
     public static void main(String[] args) {
 
