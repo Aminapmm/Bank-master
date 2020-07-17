@@ -3,7 +3,7 @@ package bank;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import bank.time.*;
-import java.time.LocalTime;
+
 import java.util.Scanner;
 
 
@@ -247,16 +247,16 @@ public class BankAccount {
     }
 
 
-        public static void Transfer(long Source,int ramzedovom,long Destination,int amount){
+        public static void Transfer(int accountnumber, int ramzedovom, int Destination, int amount){
         //TODO
-            boolean status=false;
+           // boolean status=false;
             boolean auth=false;
             int current_amount;
-            auth=Query.OnlineAuthentication(Source,ramzedovom);
+            auth=Query.OnlineAuthentication(accountnumber,ramzedovom);
                 try {
                     if (auth == true) {
 
-                         current_amount = Query.ShowInformation(Source).getInt("amount");
+                         current_amount = Query.ShowInformation(accountnumber).getInt("amount");
 
                         if (Query.ShowInformation(Destination).isFirst() == true&&amount<current_amount) {
                             System.out.printf("Are You Sure that you want to transfer  %s  to \n %s  %s's Account?",amount,Query.ShowInformation(Destination).getString("firstname"),Query.ShowInformation(Destination).getString("lastname"));
@@ -264,14 +264,22 @@ public class BankAccount {
                             if(Decision.equals("YES")){
                                 //TODO UPDATE AMOUNT OF SOURCE AND DESTINATION ACCOUNT AND RETURN A RECEIPT ---------> DONE.
                                 current_amount=current_amount-amount;
-                                Query.UpdateRecords(Source,12,Integer.toString(current_amount));
-                               // Query.UpdateRecords(1000,12,"45500");
+                                Query.UpdateRecords(accountnumber,12,Integer.toString(current_amount));
+                                Query.InsertTransactionsRecord(accountnumber,"TRANSFER",amount,0,Destination,String.format("%d Tomans Has been Transfered from THIS ACCOUNT.",amount),current_amount);
                                 current_amount=Query.ShowInformation(Destination).getInt("amount")+amount;
+
                                 Query.UpdateRecords(Destination,12,Integer.toString(current_amount));
-                              //  Query.UpdateRecords(2000,12,"12500");
-                               Deposit receipt = new Deposit(Source,amount,"Success");
+
+                                Query.InsertTransactionsRecord(Destination,"TRANSFER",amount,accountnumber,0,String.format("%d Tomans Has been Transfered To THIS ACCOUNT.",amount),current_amount);
+
+                                Deposit receipt = new Deposit(accountnumber,amount,"Success");
                                 receipt.Print_Receipt();
+
                             }
+                        }
+
+                        else {
+                            System.out.println("Unfortunately Your Account Current Amount is less than Your Entered Amount");
                         }
                     }
                 }

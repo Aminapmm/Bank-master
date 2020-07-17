@@ -30,7 +30,7 @@ public class Deposit extends TRANSACTION {
 
 	@Override
 	public void Print_Receipt(){
-		System.out.printf("			Deposit Receipt\nAccountnumber: %d\nDepositor: %s\nDate: %s\nTime: %s\nAmount: %.0f\n",this.getACCOUNTNUMBER(),0,this.getReceiptDate(),this.getReceiptTime(),this.getAMOUNT());
+		System.out.printf("			Deposit Receipt\nAccountnumber: %d\nDepositor: %s\nDate: %s\nTime: %s\nAmount: %d\n",this.getACCOUNTNUMBER(),0,this.getReceiptDate(),this.getReceiptTime(),this.getAMOUNT());
 	}
 
 	public static void main(String[] args) {
