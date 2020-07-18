@@ -8,8 +8,8 @@ import java.io.Writer;
 public class Deposit extends TRANSACTION {
 
 
-	Deposit(long ACCOUNTNUMBER, int AMOUNT,String Description) {
-		super(ACCOUNTNUMBER, AMOUNT);
+	Deposit(int ACCOUNTNUMBER, int AMOUNT,int Balance,String Description) {
+		super(ACCOUNTNUMBER, AMOUNT,Balance);
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class Deposit extends TRANSACTION {
 	}
 
 	public static void main(String[] args) {
-		Deposit d = new Deposit(1000,15000,"done");
-		d.Backup();
+		//Deposit d = new Deposit(1000,15000,"done");
+		//d.Backup();
 	}
 }

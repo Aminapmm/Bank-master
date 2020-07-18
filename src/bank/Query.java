@@ -52,7 +52,7 @@ private static Connection conn;
         return access;
 
     }
-    public static boolean OnlineAuthentication(long accountnumber,int ramzeDovom){
+    public static boolean OnlineAuthentication(int accountnumber,int ramzeDovom){
         boolean access=false;
 
         try {
@@ -97,7 +97,7 @@ private static Connection conn;
     return rs;
     }
 
-    public static boolean UpdateRecords(long accountnumber, int field_index, String data){
+    public static boolean UpdateRecords(int accountnumber, int field_index, String data){
 //TODO:UPDATE ACCOUNTS INFO IN DATABASE LIKE CHANGE THE AMOUNT AFTER TRANSFER...OR DEPOSIT OR ...WITHDRAW
         boolean status=false;
 

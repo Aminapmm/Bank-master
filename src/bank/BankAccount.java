@@ -4,6 +4,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 
 import bank.time.*;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 
@@ -249,39 +250,55 @@ public class BankAccount {
 
         public static void Transfer(int accountnumber, int ramzedovom, int Destination, int amount){
         //TODO
-           // boolean status=false;
+
             boolean auth=false;
-            int current_amount;
+            int Accountbalance;
             auth=Query.OnlineAuthentication(accountnumber,ramzedovom);
+
                 try {
                     if (auth == true) {
 
-                         current_amount = Query.ShowInformation(accountnumber).getInt("amount");
+                        Accountbalance = Query.ShowInformation(accountnumber).getInt("amount");
 
-                        if (Query.ShowInformation(Destination).isFirst() == true&&amount<current_amount) {
+
+                        if (Query.ShowInformation(Destination).isFirst() == true&&amount<Accountbalance) {
                             System.out.printf("Are You Sure that you want to transfer  %s  to \n %s  %s's Account?",amount,Query.ShowInformation(Destination).getString("firstname"),Query.ShowInformation(Destination).getString("lastname"));
                             String Decision= input.next().toUpperCase();
                             if(Decision.equals("YES")){
-                                //TODO UPDATE AMOUNT OF SOURCE AND DESTINATION ACCOUNT AND RETURN A RECEIPT ---------> DONE.
-                                current_amount=current_amount-amount;
-                                Query.UpdateRecords(accountnumber,12,Integer.toString(current_amount));
-                                Query.InsertTransactionsRecord(accountnumber,"TRANSFER",amount,0,Destination,String.format("%d Tomans Has been Transfered from THIS ACCOUNT.",amount),current_amount);
-                                current_amount=Query.ShowInformation(Destination).getInt("amount")+amount;
 
-                                Query.UpdateRecords(Destination,12,Integer.toString(current_amount));
+                                Accountbalance=Accountbalance-amount;
 
-                                Query.InsertTransactionsRecord(Destination,"TRANSFER",amount,accountnumber,0,String.format("%d Tomans Has been Transfered To THIS ACCOUNT.",amount),current_amount);
+                                Query.UpdateRecords(accountnumber,12,Integer.toString(Accountbalance));
+                                Query.InsertTransactionsRecord(accountnumber,"TRANSFER",amount,0,Destination,String.format("%d Tomans Has been Transfered from THIS ACCOUNT.",amount),Accountbalance);
+                                Transfer receipt = new Transfer(accountnumber,Destination,amount,Accountbalance,"Done");
 
-                                Deposit receipt = new Deposit(accountnumber,amount,"Success");
+                                Accountbalance=Query.ShowInformation(Destination).getInt("amount")+amount;
+
+                                Query.UpdateRecords(Destination,12,Integer.toString(Accountbalance));
+                                Query.InsertTransactionsRecord(Destination,"TRANSFER",amount,accountnumber,0,String.format("%d Tomans Has been Transfered To THIS ACCOUNT.",amount),Accountbalance);
+
                                 receipt.Print_Receipt();
 
                             }
+
                         }
 
-                        else {
-                            System.out.println("Unfortunately Your Account Current Amount is less than Your Entered Amount");
+                        else if(amount>Accountbalance){
+                            System.out.println("Unfortunately Your AccountBalance is less than Your Entered Amount");
                         }
+
+
+                        else if(Query.ShowInformation(Destination).isFirst()==false){
+                            System.out.println("Destination Account nubmer not found in System try again.");
+                        }
+
+
                     }
+
+                    else{
+                        System.out.println("Access Denied.");
+                    }
+
                 }
                 catch (Exception e){
                     System.out.println(e.getMessage());
@@ -291,7 +308,7 @@ public class BankAccount {
 
         }
 
-        public static void Withdraw(long accountnumber,int ramzeAvval,int amount){
+        public static void Withdraw(int accountnumber,int ramzeAvval,int amount){
         //TODO:
             try {
 
@@ -301,8 +318,8 @@ public class BankAccount {
 
                 if(current_amount>=amount) {
                     Query.UpdateRecords(accountnumber, 12, Integer.toString(current_amount - amount));
-                    current_amount-=amount;
-                    w = new Withdraw(accountnumber,current_amount,current_amount);
+                    int AccountBalanceBalance=current_amount-amount;
+                    w = new Withdraw(accountnumber,amount,AccountBalanceBalance);
                     w.Print_Receipt();
                 }
             }
@@ -317,9 +334,12 @@ public class BankAccount {
         }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
 
-    BankAccount.Transfer(1000,5678,2000,5400);
+    BankAccount.Transfer(1000,5678,2000,184000);
+       // System.out.println(Query.OnlineAuthentication(1000,5678));
+       // System.out.println(Query.ShowInformation(1000).isFirst());
+
 
 
     }

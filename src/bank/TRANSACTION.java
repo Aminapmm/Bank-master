@@ -7,29 +7,31 @@ import bank.time.*;
 
 abstract class TRANSACTION {
 
-	private long ACCOUNTNUMBER;
+	private int ACCOUNTNUMBER;
 	private int AMOUNT;
 	private String DESCRIPTION="";
 	private	String ReceiptTime;
 	private PersianDate ReceiptDate;
+	private int AccountBalance;
 
-	TRANSACTION(long ACCOUNTNUMBER,int AMOUNT,String DESCRIPTION)
+	TRANSACTION(int ACCOUNTNUMBER,int AMOUNT,int Balance,String DESCRIPTION)
 	{
-		this(ACCOUNTNUMBER,AMOUNT);
+		this(ACCOUNTNUMBER,AMOUNT,Balance);
 		this.DESCRIPTION=DESCRIPTION;
 
 	}
 
-	TRANSACTION(long ACCOUNTNUMBER,int AMOUNT){
+	TRANSACTION(int ACCOUNTNUMBER,int AMOUNT,int Balance){
 		this.ReceiptDate=PersianDate.now();
 		this.ACCOUNTNUMBER=ACCOUNTNUMBER;
 		this.AMOUNT=AMOUNT;
 		this.ReceiptDate=PersianDate.now();
 		DateTimeFormatter std=DateTimeFormatter.ofPattern("HH:mm:ss");
 		this.ReceiptTime=LocalTime.now().format(std);
+		this.AccountBalance = Balance;
 	}
 
-	public long getACCOUNTNUMBER(){
+	public int getACCOUNTNUMBER(){
 		return this.ACCOUNTNUMBER;
 	}
 
@@ -49,7 +51,9 @@ abstract class TRANSACTION {
 		return this.DESCRIPTION;
 	}
 
-
+	public int getAccountBalance() {
+		return this.AccountBalance;
+	}
 
 	abstract  void Backup();
 	abstract void Print_Receipt();
