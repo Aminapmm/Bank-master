@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 
 public class BankAccount {
+
     private String Firstname;
     private String Lastname;
     private String Fathername;
@@ -245,7 +246,7 @@ public class BankAccount {
         public BankAccount getAccount(){return new BankAccount(this);}
 
 
-    }
+        }
 
 
         public static void Transfer(int accountnumber, int ramzedovom, int Destination, int amount){
@@ -314,13 +315,22 @@ public class BankAccount {
 
                 boolean auth = Query.Authentication(accountnumber, ramzeAvval);
                 Withdraw w;
-                int current_amount = Query.ShowInformation(accountnumber).getInt("Amount");
 
-                if(current_amount>=amount) {
-                    Query.UpdateRecords(accountnumber, 12, Integer.toString(current_amount - amount));
-                    int AccountBalanceBalance=current_amount-amount;
+                int Accountbalance = Query.ShowInformation(accountnumber).getInt("Amount");
+
+                if(Accountbalance>=amount) {
+
+                    Query.UpdateRecords(accountnumber, 12, Integer.toString(Accountbalance - amount));
+
+                    int AccountBalanceBalance=Accountbalance-amount;
+
                     w = new Withdraw(accountnumber,amount,AccountBalanceBalance);
+
                     w.Print_Receipt();
+                }
+
+                else {
+                    System.out.println("Your Entered Amount for Withdraw is More Than your Accountbalance. ");
                 }
             }
             catch (Exception e){
@@ -328,15 +338,33 @@ public class BankAccount {
             }
         }
 
-        public static void Deposit(long Accountnumber,int Ramzeavval,int Amount){
+        public static void Deposit(int Accountnumber,int Ramzeavval,int Amount) throws SQLException {
            boolean auth =  Query.Authentication(Accountnumber,Ramzeavval);
+           if(auth==true){
+               int Accountbalance = Query.ShowInformation(Accountnumber).getInt("Amount");
+               boolean status = Query.UpdateRecords(Accountnumber,12,Integer.toString(Accountbalance)+Amount);
+               if(status==true){
+                   Deposit receipt = new Deposit(Accountnumber,Amount,Accountbalance+Amount);
+                   receipt.Print_Receipt();
+               }
+
+               else {
+                   System.out.println("Deposit the Cash Failed,Try Again Later.");
+               }
+
+           }
+           else {
+               System.out.println("Access Denied.");
+           }
 
         }
 
 
     public static void main(String[] args) throws SQLException {
 
-    BankAccount.Transfer(1000,5678,2000,184000);
+    //BankAccount.Transfer(1000,5678,2000,184000);
+        //BankAccount.Deposit(1000,2356,500);
+        BankAccount.Withdraw(1000,2356,4000000);
        // System.out.println(Query.OnlineAuthentication(1000,5678));
        // System.out.println(Query.ShowInformation(1000).isFirst());
 

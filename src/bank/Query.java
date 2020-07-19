@@ -7,11 +7,17 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.concurrent.ExecutorService;
 
 import static java.lang.System.*;
 
 public class Query{
+
+    //static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    static final String DB_URL = "jdbc:mysql://localhost/Bankaccounts?useLegacyDatetimeCode=false";
+    static final String DB_USERNAME = "root";
+    static final String DB_PASSWORD = "13801380";
 private static Connection conn;
 
 
@@ -19,8 +25,9 @@ private static Connection conn;
         try {
 
 
-           Connection conn;
-            conn = DriverManager.getConnection( "jdbc:mysql://localhost/Bankaccounts?useLegacyDatetimeCode=false", "root", "13801380");
+            //Connection conn;
+           // conn = DriverManager.getConnection( "jdbc:mysql://localhost/Bankaccounts?useLegacyDatetimeCode=false", "root", "13801380");
+            System.out.println(Authentication(1000,2356));
 
 
 
@@ -30,15 +37,16 @@ private static Connection conn;
         }
     }
 
-    public static boolean Authentication(long accountnumber,int ramzeAvval){
+    public static boolean Authentication(int accountnumber,int ramzeAvval){
         boolean access=false;
 
         try {
 
-            String query = "SELECT * FROM CUSTOMERSINFO WHERE ACCOUNTNUMBER = ?";
+            conn = DriverManager.getConnection( DB_URL,DB_USERNAME,DB_PASSWORD);
+            String query = "SELECT * FROM CUSTOMERSINFO WHERE accountnumber=?";
             PreparedStatement pstmt = conn.prepareStatement(query);
-            pstmt.setLong(1,accountnumber);
-            ResultSet rs = pstmt.executeQuery(query);
+            pstmt.setInt(1,accountnumber);
+            ResultSet rs = pstmt.executeQuery();
             rs.next();
             if(rs.getInt("Ramzeavval")==ramzeAvval){
                access=true;

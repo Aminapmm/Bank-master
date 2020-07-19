@@ -4,12 +4,7 @@ public class Withdraw extends TRANSACTION {
 private int withdrawn_amount;
 	Withdraw(int ACCOUNTNUMBER, int AMOUNT,int Balance) {
 		super(ACCOUNTNUMBER, AMOUNT,Balance);
-		this.withdrawn_amount=withdrawn_amount;
 
-	}
-
-	public int getWithdrawn_amount() {
-		return this.withdrawn_amount;
 	}
 
 	@Override
@@ -19,7 +14,7 @@ private int withdrawn_amount;
 
 	@Override
 	public void Print_Receipt(){
-		System.out.printf("		Withdraw Receipt\nAccountnumber: %d\nAccountBalance: %d\nDate: %s\nTime: %s\nDescription:%d TOMANS Withdrawn Succesfully.",this.getACCOUNTNUMBER(),this.getAccountBalance(),this.getReceiptDate(),this.getReceiptTime(),this.getAccountBalance());
+		System.out.printf("		Withdraw Receipt\nAccountnumber: %d\nAccountBalance: %d\nDate: %s\nTime: %s\nDescription:%d TOMANS Withdrawn Succesfully.",this.getACCOUNTNUMBER(),this.getAccountBalance(),this.getReceiptDate(),this.getReceiptTime(),this.getAMOUNT());
 	}
 
 	public static void main(String[] args) {

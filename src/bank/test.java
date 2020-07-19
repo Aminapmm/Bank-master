@@ -18,11 +18,19 @@ public class test {
         try {
             Connection conn = DriverManager.getConnection( "jdbc:mysql://localhost/Bankaccounts?useLegacyDatetimeCode=false", "root", "13801380");
             Scanner input = new Scanner(System.in);
-           // DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss");
-           // String DATETIME = PersianDate.now()+" "+LocalTime.now().format(format);
-          //  System.out.println(Timestamp.valueOf(DATETIME));
-            //Query.InsertTransactionsRecord(1000,"Withdraw",16000,0,0,"KHARID AZ SUPERMARKET");
-            //Timestamp.valueOf();
+            PreparedStatement pstmt = conn.prepareStatement("select * from customersinfo where accountnumber=?");
+            pstmt.setInt(1,1000);
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+
+            if(rs.getInt("RAMZEAVVAL")==2356){
+                boolean access=true;
+             System.out.println(access);
+
+
+
+             }
+
 
             
         }
