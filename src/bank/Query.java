@@ -1,6 +1,7 @@
 package bank;
 
 import bank.time.PersianDate;
+import com.mysql.cj.xdevapi.SqlDataResult;
 
 import javax.management.ServiceNotFoundException;
 import java.sql.*;
@@ -18,7 +19,7 @@ public class Query{
     static final String DB_URL = "jdbc:mysql://localhost/Bankaccounts?useLegacyDatetimeCode=false";
     static final String DB_USERNAME = "root";
     static final String DB_PASSWORD = "13801380";
-private static Connection conn;
+
 
 
     public static void main(String[] args) {
@@ -37,12 +38,10 @@ private static Connection conn;
         }
     }
 
-    public static boolean Authentication(int accountnumber,int ramzeAvval){
+    public static boolean Authentication(int accountnumber,int ramzeAvval)throws SQLException{
         boolean access=false;
 
-        try {
-
-            conn = DriverManager.getConnection( DB_URL,DB_USERNAME,DB_PASSWORD);
+            Connection conn = DriverManager.getConnection( DB_URL,DB_USERNAME,DB_PASSWORD);
             String query = "SELECT * FROM CUSTOMERSINFO WHERE accountnumber=?";
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setInt(1,accountnumber);
@@ -52,24 +51,19 @@ private static Connection conn;
                access=true;
 
             }
-        }
-        catch (SQLException e) {
-            out.println(e.getMessage());
-        }
 
         return access;
 
     }
-    public static boolean OnlineAuthentication(int accountnumber,int ramzeDovom){
+    public static boolean OnlineAuthentication(int accountnumber,int ramzeDovom)throws SQLException{
         boolean access=false;
 
-        try {
 
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Bankaccounts", "root", "13801380");
 
             String query = "SELECT Ramzedovom FROM CUSTOMERSINFO WHERE accountnumber=?";
             PreparedStatement pstmt = conn.prepareStatement(query);
-            pstmt.setLong(1,accountnumber);
+            pstmt.setInt(1,accountnumber);
 
             ResultSet rs = pstmt.executeQuery();
             rs.next();
@@ -77,24 +71,20 @@ private static Connection conn;
                 access=true;
 
             }
-        }
-        catch (SQLException e) {
-            out.println(e.getMessage());
-        }
 
         return access;
     }
 
 
 
-    public static  ResultSet ShowInformation(long accountnumber) {
+    public static  ResultSet ShowInformation(int accountnumber) {
         ResultSet rs=null;
         try {
 
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Bankaccounts", "root", "13801380");
             String sqlquery = "SELECT * FROM CUSTOMERSINFO WHERE ACCOUNTNUMBER=?";
             PreparedStatement pstmt = conn.prepareStatement(sqlquery);
-            pstmt.setLong(1, accountnumber);
+            pstmt.setInt(1, accountnumber);
              rs = pstmt.executeQuery();
              rs.next();
 
@@ -169,8 +159,32 @@ private static Connection conn;
 return status;
     }
 
-    public static void InsertCustomersRecords(){
-//TODO
+    public static boolean InsertCustomersRecords(BankAccount account)throws SQLException {
+
+        boolean status=false;
+
+        Connection conn = DriverManager.getConnection(DB_URL,DB_USERNAME,DB_PASSWORD);
+
+        String query = "INSERT INTO CUSTOMERSINFO (FIRSTNAME,LASTNAME,NATIONALID,BIRTHDATE,PHONENUMBER,ACCOUNTNUMBER,ACCOUNTTYPE,RAMZEAVVAL,RAMZEDOVOM,ACCOUNTBALANCE,REGISTERDATE) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+
+
+        PreparedStatement pstmt = conn.prepareStatement(query);
+
+        pstmt.setString(1,account.getFirstname());
+        pstmt.setString(2,account.getLastname());
+        pstmt.setLong(3,account.getNationalID());
+        pstmt.setDate(4,Date.valueOf(account.getBirthdate().toString()));
+        pstmt.setLong(5,account.getPhonenumber());
+        pstmt.setInt(6,account.getAccountnumber());
+        pstmt.setString(7,account.getAccountype());
+        pstmt.setInt(8,account.getRamzeAvval());
+        pstmt.setInt(9,account.getRamzeDovom());
+        pstmt.setInt(10,account.getAccountbalance());
+        pstmt.setDate(11,Date.valueOf(account.getRegistrationDate().toString()));
+
+        status=(pstmt.executeUpdate()==1?true:false);
+
+        return status;
     }
 
     public static boolean InsertTransactionsRecord(int accountnumber, String type, int Amount, int source, int destination, String description,int AccountBalance){

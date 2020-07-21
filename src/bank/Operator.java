@@ -25,14 +25,14 @@ public class Operator {
         String lastname = "";
         String fathername = "";
         long phonenumber = 0;
-        long accountnumber = 0;
+        int accountnumber = 0;
         long nationalid = 0;
         PersianDate birthdate;
         // PersianDate registrationdate;
         String accountype;
         // int ramzeavval;
         // int ramzedovom;
-        int amount;
+        int accountbalance;
         double interestrate;
 
         BankAccount.builder Builder ;
@@ -78,7 +78,7 @@ public class Operator {
 
             System.out.println("Enter Your Amount:");
 
-            amount = input.nextInt();
+            accountbalance = input.nextInt();
 
 
             Builder.setFirstname(firstname);
@@ -90,7 +90,7 @@ public class Operator {
             Builder.setFirstname(firstname);
             Builder.setAccounttype(accountype);
             Builder.setInterestrate(interestrate);
-            Builder.setAmount(amount);
+            Builder.setAccountbalance(accountbalance);
             Builder.GenerateAccountnumber();
             Builder.GenerateRamzeAvval();
             Builder.GenerateRamzeDovom();

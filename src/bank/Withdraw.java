@@ -1,7 +1,7 @@
 package bank;
 
 public class Withdraw extends TRANSACTION {
-private int withdrawn_amount;
+
 	Withdraw(int ACCOUNTNUMBER, int AMOUNT,int Balance) {
 		super(ACCOUNTNUMBER, AMOUNT,Balance);
 
