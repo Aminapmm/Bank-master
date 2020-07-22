@@ -4,12 +4,15 @@ import org.apache.commons.lang3.RandomStringUtils;
 
 import bank.time.*;
 
+import java.math.BigDecimal;
+import java.nio.charset.CharsetEncoder;
 import java.sql.SQLException;
+import java.util.Currency;
 import java.util.Scanner;
 
 
 
-public class BankAccount {
+public abstract class BankAccount {
 
     private String Firstname;
     private String Lastname;
@@ -28,7 +31,61 @@ public class BankAccount {
     static Scanner input = new Scanner(System.in);
 
 
-    private BankAccount(builder b) {
+
+    public void setFirstname(String firstname) {
+        Firstname = firstname;
+    }
+
+    public void setLastname(String lastname) {
+        Lastname = lastname;
+    }
+
+    public void setFathername(String fathername) {
+        Fathername = fathername;
+    }
+
+    public void setNationalID(long nationalID) {
+        NationalID = nationalID;
+    }
+
+    public void setPhonenumber(long phonenumber) {
+        Phonenumber = phonenumber;
+    }
+
+    public void setAccountnumber(int accountnumber) {
+        Accountnumber = accountnumber;
+    }
+
+    public void setBirthdate(PersianDate birthdate) {
+        Birthdate = birthdate;
+    }
+
+    public void setAccountype(String accountype) {
+        Accountype = accountype;
+    }
+
+    public void setRamzeAvval(int ramzeAvval) {
+        RamzeAvval = ramzeAvval;
+    }
+
+    public void setRamzeDovom(int ramzeDovom) {
+        RamzeDovom = ramzeDovom;
+    }
+
+    public void setAccountbalance(int accountbalance) {
+        Accountbalance = accountbalance;
+    }
+
+    public void setInterestrate(double interestrate) {
+        Interestrate = interestrate;
+    }
+
+    public void setRegistrationDate(PersianDate registrationDate) {
+        RegistrationDate = registrationDate;
+    }
+
+
+    public BankAccount(builder b) {
 
 
             this.Firstname = b.Firstname;
@@ -65,6 +122,8 @@ public class BankAccount {
             this.RegistrationDate = b.Registrationdate;
 
     }
+
+
 
 
     public String getFirstname () {
@@ -136,7 +195,30 @@ public class BankAccount {
 
 
 
-    public static class builder{
+    //TODO:fix these two subclass
+
+
+
+    public static void main(String[] args) throws SQLException {
+
+       // BankAccount b = new Savingaccount.Savingaccountbuilder().getAccount();
+        //BankAccount A = new Savingaccount(b);
+       // builder b = new builder();
+
+
+        //System.out.println(s.getAccountype());
+    //BankAccount.Transfer(1000,5678,2000,184000);
+        //Operations.Deposit(1000,2356,5000);
+        //BankAccount.Withdraw(1000,2356,4000000);
+       // System.out.println(Query.OnlineAuthentication(1000,5678));
+       // System.out.println(Query.ShowInformation(1000).isFirst());
+        //Checkingaccount account1 = new Checkingaccount.Checkingaccountbuilder().setLastname("ahmadi").getAccount();
+
+
+
+    }
+
+     static abstract class builder{
 
         private String Firstname;
         private String Lastname;
@@ -152,127 +234,288 @@ public class BankAccount {
         private int Accountbalance;
         private double Interestrate;
 
-
-        public builder setFirstname(String Firstname) {
-            this.Firstname = Firstname;
+        public builder setFirstname(String firstname) {
+            Firstname = firstname;
             return this;
         }
 
-
-
-        public builder setLastname(String Lastname) {
-            this.Lastname = Lastname;
+        public builder setLastname(String lastname) {
+            Lastname = lastname;
             return this;
         }
 
-
-
-        public builder setFathertname(String fathertname) {
-            this.Fathername = fathertname;
+        public builder setFathername(String fathername) {
+            Fathername = fathername;
             return this;
         }
 
-
-
-        public builder setNationalID(long NationalID) {
-            this.NationalID = NationalID;
+        public builder setNationalID(long nationalID) {
+            NationalID = nationalID;
             return this;
         }
 
-
-
-        public builder setPhonenumber(long Phonenumber) {
-            this.Phonenumber = Phonenumber;
+        public builder setPhonenumber(long phonenumber) {
+            Phonenumber = phonenumber;
             return this;
         }
 
-
-
-        public builder setBirthdate(int yy, int MM, int dd) {
-            this.Birthdate = PersianDate.of(yy,MM,dd);
+        public builder setAccountnumber(int accountnumber) {
+            Accountnumber = accountnumber;
             return this;
         }
 
-        public builder setRegistrationdate(){
-            this.Registrationdate=PersianDate.now();
+        public builder setBirthdate(PersianDate birthdate) {
+            Birthdate = birthdate;
             return this;
         }
 
-        public builder setAccountnumber(int Accountnumber){
-            this.Accountnumber=Accountnumber;
+        public builder setRegistrationdate(PersianDate registrationdate) {
+            Registrationdate = registrationdate;
             return this;
         }
 
-
-
-        public builder setAccounttype(String Type) {
-            this.Accountype = Type;
+        public builder setAccountype(String accountype) {
+            Accountype = accountype;
             return this;
         }
 
-
-
-        public builder setAccountbalance(int Accountbalance) {
-            this.Accountbalance = Accountbalance;
+        public builder setRamzeAvval(int ramzeAvval) {
+            RamzeAvval = ramzeAvval;
             return this;
         }
 
-
-
-        public builder setRamzeAvval(int RamzeAvval) {
-            this.RamzeAvval = RamzeAvval;
+        public builder setRamzeDovom(int ramzeDovom) {
+            RamzeDovom = ramzeDovom;
             return this;
         }
 
-
-
-        public builder setRamzeDovom(int RamzeDovom) {
-            this.RamzeDovom = RamzeDovom;
+        public builder setAccountbalance(int accountbalance) {
+            Accountbalance = accountbalance;
             return this;
         }
 
-
-
-        public builder setInterestrate(double Interstrate) {
-            this.Interestrate = Interstrate;
+        public builder setInterestrate(double interestrate) {
+            Interestrate = interestrate;
             return this;
         }
 
-
-        public builder GenerateAccountnumber(){
-            this.Accountnumber=Integer.parseInt(RandomStringUtils.randomNumeric(8));
-            return this;
-        }
-
-        public builder GenerateRamzeAvval() {
-            this.RamzeAvval=Integer.parseInt(RandomStringUtils.randomNumeric(4));
-            return this;
-        }
-
-
-
-        public builder GenerateRamzeDovom() {
-            this.RamzeDovom=Integer.parseInt(RandomStringUtils.randomNumeric(8));
-            return this;
-        }
-
-
-        public BankAccount getAccount(){return new BankAccount(this);}
+        public  abstract BankAccount getAccount();
 
 
     }
 
 
 
-    public static void main(String[] args) throws SQLException {
-
-    //BankAccount.Transfer(1000,5678,2000,184000);
-        Operations.Deposit(1000,2356,5000);
-        //BankAccount.Withdraw(1000,2356,4000000);
-       // System.out.println(Query.OnlineAuthentication(1000,5678));
-       // System.out.println(Query.ShowInformation(1000).isFirst());
 
 
+}
 
+class Savingaccount extends BankAccount {
+    private int Periodtime;
+
+   private Savingaccount(Savingaccountbuilder Builder){
+       super(Builder);
+   }
+
+    public static void main(String[] args) {
+        Savingaccount savingaccount = new Savingaccountbuilder().setLastname("amin").getAccount();
+        System.out.println(savingaccount.getLastname());
+
+    }
+
+
+
+    public void calculateinterest() {}
+
+
+    static class Savingaccountbuilder extends BankAccount.builder {
+
+
+        @Override
+        public Savingaccountbuilder setFirstname(String firstname) {
+            return this;
+        }
+
+        @Override
+        public Savingaccountbuilder setLastname(String lastname) {
+             super.setLastname(lastname);
+             return this;
+        }
+
+        @Override
+        public Savingaccountbuilder setFathername(String fathername) {
+             super.setFathername(fathername);
+             return this;
+        }
+
+        @Override
+        public Savingaccountbuilder setNationalID(long nationalID) {
+             super.setNationalID(nationalID);
+             return this;
+        }
+
+        @Override
+        public Savingaccountbuilder setPhonenumber(long phonenumber) {
+            super.setPhonenumber(phonenumber);
+            return this;
+        }
+
+        @Override
+        public Savingaccountbuilder setAccountnumber(int accountnumber) {
+            super.setAccountnumber(accountnumber);
+            return this;
+        }
+
+        @Override
+        public Savingaccountbuilder setBirthdate(PersianDate birthdate) {
+             super.setBirthdate(birthdate);
+             return this;
+        }
+
+        @Override
+        public Savingaccountbuilder setRegistrationdate(PersianDate registrationdate) {
+            super.setRegistrationdate(registrationdate);
+            return this;
+        }
+
+        @Override
+        public Savingaccountbuilder setAccountype(String accountype) {
+            super.setAccountype(accountype);
+            return this;
+        }
+
+        @Override
+        public Savingaccountbuilder setRamzeAvval(int ramzeAvval) {
+             super.setRamzeAvval(ramzeAvval);
+             return this;
+        }
+
+        @Override
+        public Savingaccountbuilder setRamzeDovom(int ramzeDovom) {
+             super.setRamzeDovom(ramzeDovom);
+             return this;
+        }
+
+        @Override
+        public Savingaccountbuilder setAccountbalance(int accountbalance) {
+             super.setAccountbalance(accountbalance);
+             return this;
+        }
+
+        @Override
+        public Savingaccountbuilder setInterestrate(double interestrate) {
+             super.setInterestrate(interestrate);
+             return this;
+        }
+
+
+        @Override
+        public Savingaccount getAccount() {
+            Savingaccount savingaccount = new Savingaccount(this);
+            return savingaccount;
+        }
+    }
+
+
+}
+
+class CheckingAccount extends BankAccount{
+
+    public static void main(String[] args) {
+        CheckingAccount account = new CheckingAccount.Checkingbuilder().setAccountbalance(1151511).getAccount();
+        System.out.println(account.getAccountbalance());
+    }
+
+    private CheckingAccount(Checkingbuilder Builder){
+        super(Builder);
+    }
+
+    static class Checkingbuilder extends builder{
+        @Override
+        public Checkingbuilder setFirstname(String firstname) {
+             super.setFirstname(firstname);
+             return this;
+        }
+
+        @Override
+        public Checkingbuilder setLastname(String lastname) {
+             super.setLastname(lastname);
+             return this;
+        }
+
+        @Override
+        public Checkingbuilder setFathername(String fathername) {
+            super.setFathername(fathername);
+            return this;
+        }
+
+        @Override
+        public Checkingbuilder setNationalID(long nationalID) {
+            super.setNationalID(nationalID);
+            return this;
+        }
+
+        @Override
+        public Checkingbuilder setPhonenumber(long phonenumber) {
+             super.setPhonenumber(phonenumber);
+             return this;
+        }
+
+        @Override
+        public Checkingbuilder setAccountnumber(int accountnumber) {
+            super.setAccountnumber(accountnumber);
+            return this;
+        }
+
+        @Override
+        public Checkingbuilder setBirthdate(PersianDate birthdate) {
+            super.setBirthdate(birthdate);
+            return this;
+        }
+
+        @Override
+        public Checkingbuilder setRegistrationdate(PersianDate registrationdate) {
+             super.setRegistrationdate(registrationdate);
+             return this;
+        }
+
+        @Override
+        public Checkingbuilder setAccountype(String accountype) {
+             super.setAccountype(accountype);
+             return this;
+        }
+
+        @Override
+        public Checkingbuilder setRamzeAvval(int ramzeAvval) {
+            super.setRamzeAvval(ramzeAvval);
+            return this;
+        }
+
+        @Override
+        public Checkingbuilder setRamzeDovom(int ramzeDovom) {
+            super.setRamzeDovom(ramzeDovom);
+            return this;
+        }
+
+        @Override
+        public Checkingbuilder setAccountbalance(int accountbalance) {
+            super.setAccountbalance(accountbalance);
+            return this;
+        }
+
+        @Override
+        public Checkingbuilder setInterestrate(double interestrate) {
+            super.setInterestrate(interestrate);
+            return this;
+        }
+
+        @Override
+        public CheckingAccount getAccount(){
+            return new CheckingAccount(this);
+        }
     }
 }
+
+
+
+

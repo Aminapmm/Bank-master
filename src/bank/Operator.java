@@ -19,7 +19,7 @@ public class Operator {
 
 
 
-    public static BankAccount buildaccount(int Case) {
+    public static void buildaccount(int Case) {
 
         String firstname = "";
         String lastname = "";
@@ -36,7 +36,8 @@ public class Operator {
         double interestrate;
 
         BankAccount.builder Builder ;
-        Builder = new BankAccount.builder();
+        //BankAccount.Savingaccountbuilder account;
+       // Builder = new BankAccount.builder().setFirstname("amin");
 
         switch (Case) {
 
@@ -81,21 +82,6 @@ public class Operator {
             accountbalance = input.nextInt();
 
 
-            Builder.setFirstname(firstname);
-            Builder.setLastname(lastname);
-            Builder.setFathertname(fathername);
-            Builder.setNationalID(nationalid);
-            Builder.setPhonenumber(phonenumber);
-            Builder.setBirthdate(yy, MM, dd);
-            Builder.setFirstname(firstname);
-            Builder.setAccounttype(accountype);
-            Builder.setInterestrate(interestrate);
-            Builder.setAccountbalance(accountbalance);
-            Builder.GenerateAccountnumber();
-            Builder.GenerateRamzeAvval();
-            Builder.GenerateRamzeDovom();
-            Builder.setRegistrationdate();
-
             //return Builder.getAccount();
 
             case (2):
@@ -127,6 +113,6 @@ public class Operator {
 ***/
                 //return Builder.getAccount();
         }
-        return Builder.getAccount();
+       // return Builder.getAccount();
     }
 }

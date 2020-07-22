@@ -22,6 +22,9 @@ public class test {
    //System.out.println(Query.InsertCustomersRecords(account));
     //System.out.println(account.getAccountnumber());
 
+//    public static boolean InsertTransactionsRecord(int accountnumber, String type, int Amount, int source, int destination, String description,int AccountBalance){
+
+
         // final String DB_URL = "jdbc:mysql://localhost/bankaccounts?useLegacyDatetimeCode=false";
        //  final String DB_USERNAME = "root";
         // final String DB_PASSWORD = "13801380";

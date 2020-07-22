@@ -78,25 +78,30 @@ public class Query{
 
 
     public static  ResultSet ShowInformation(int accountnumber) {
+
         ResultSet rs=null;
+
         try {
 
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Bankaccounts", "root", "13801380");
-            String sqlquery = "SELECT * FROM CUSTOMERSINFO WHERE ACCOUNTNUMBER=?";
-            PreparedStatement pstmt = conn.prepareStatement(sqlquery);
+            String query = "SELECT * FROM CUSTOMERSINFO WHERE ACCOUNTNUMBER=?";
+            PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setInt(1, accountnumber);
              rs = pstmt.executeQuery();
              rs.next();
 
 
-        } catch (Exception e) {
-            out.println(e.getMessage());
         }
-    return rs;
-    }
+            catch (Exception e) {
+                out.println(e.getMessage());
+            }
+            return rs;
+        }
 
     public static boolean UpdateRecords(int accountnumber, int field_index, String data){
-//TODO:UPDATE ACCOUNTS INFO IN DATABASE LIKE CHANGE THE AMOUNT AFTER TRANSFER...OR DEPOSIT OR ...WITHDRAW
+
+        //TODO:UPDATE ACCOUNTS INFO IN DATABASE LIKE CHANGE THE AMOUNT AFTER TRANSFER...OR DEPOSIT OR ...WITHDRAW
+
         boolean status=false;
 
         try {
@@ -155,79 +160,82 @@ public class Query{
         }
         catch (Exception e){
             System.out.println(e.getMessage());
-        }
-return status;
-    }
+                }
+        return status;
+            }
 
     public static boolean InsertCustomersRecords(BankAccount account)throws SQLException {
 
-        boolean status=false;
+            boolean status=false;
 
-        Connection conn = DriverManager.getConnection(DB_URL,DB_USERNAME,DB_PASSWORD);
+            Connection conn = DriverManager.getConnection(DB_URL,DB_USERNAME,DB_PASSWORD);
 
-        String query = "INSERT INTO CUSTOMERSINFO (FIRSTNAME,LASTNAME,NATIONALID,BIRTHDATE,PHONENUMBER,ACCOUNTNUMBER,ACCOUNTTYPE,RAMZEAVVAL,RAMZEDOVOM,ACCOUNTBALANCE,REGISTERDATE) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+            String query = "INSERT INTO CUSTOMERSINFO (FIRSTNAME,LASTNAME,NATIONALID,BIRTHDATE,PHONENUMBER,ACCOUNTNUMBER,ACCOUNTTYPE,RAMZEAVVAL,RAMZEDOVOM,ACCOUNTBALANCE,REGISTERDATE) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
 
 
-        PreparedStatement pstmt = conn.prepareStatement(query);
+            PreparedStatement pstmt = conn.prepareStatement(query);
 
-        pstmt.setString(1,account.getFirstname());
-        pstmt.setString(2,account.getLastname());
-        pstmt.setLong(3,account.getNationalID());
-        pstmt.setDate(4,Date.valueOf(account.getBirthdate().toString()));
-        pstmt.setLong(5,account.getPhonenumber());
-        pstmt.setInt(6,account.getAccountnumber());
-        pstmt.setString(7,account.getAccountype());
-        pstmt.setInt(8,account.getRamzeAvval());
-        pstmt.setInt(9,account.getRamzeDovom());
-        pstmt.setInt(10,account.getAccountbalance());
-        pstmt.setDate(11,Date.valueOf(account.getRegistrationDate().toString()));
+            pstmt.setString(1,account.getFirstname());
+            pstmt.setString(2,account.getLastname());
+            pstmt.setLong(3,account.getNationalID());
+            pstmt.setDate(4,Date.valueOf(account.getBirthdate().toString()));
+            pstmt.setLong(5,account.getPhonenumber());
+            pstmt.setInt(6,account.getAccountnumber());
+            pstmt.setString(7,account.getAccountype());
+            pstmt.setInt(8,account.getRamzeAvval());
+            pstmt.setInt(9,account.getRamzeDovom());
+            pstmt.setInt(10,account.getAccountbalance());
+            pstmt.setDate(11,Date.valueOf(account.getRegistrationDate().toString()));
 
-        status=(pstmt.executeUpdate()==1?true:false);
+            status=(pstmt.executeUpdate()==1?true:false);
 
-        return status;
-    }
+            return status;
+        }
 
     public static boolean InsertTransactionsRecord(int accountnumber, String type, int Amount, int source, int destination, String description,int AccountBalance){
 
-        boolean status=false;
+            boolean status=false;
 
-        try {
+            try {
 
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Bankaccounts", "root", "13801380");
+                Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Bankaccounts", "root", "13801380");
 
-            String query = "INSERT INTO TRANSACTIONS (datetime,Destination,description,amount,accountnumber,source,receipttype,Accountbalance) VALUES(?,?,?,?,?,?,?,?)";
+                String query = "INSERT INTO TRANSACTIONS (datetime,Destination,description,amount,accountnumber,source,receipttype,Accountbalance) VALUES(?,?,?,?,?,?,?,?)";
 
-            PreparedStatement pstmt =conn.prepareStatement(query);
+                PreparedStatement pstmt =conn.prepareStatement(query);
 
-            DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss");
-            String DATETIME = PersianDate.now()+" "+ LocalTime.now().format(format);
-            Timestamp datetime = Timestamp.valueOf(DATETIME);
+                DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss");
+                String DATETIME = PersianDate.now()+" "+ LocalTime.now().format(format);
+                Timestamp datetime = Timestamp.valueOf(DATETIME);
 
-            pstmt.setTimestamp(1,datetime);
+                pstmt.setTimestamp(1,datetime);
 
-            pstmt.setInt(2,destination);
+                pstmt.setInt(2,destination);
 
-            pstmt.setString(3,description);
+                pstmt.setString(3,description);
 
-            pstmt.setInt(4,Amount);
+                pstmt.setInt(4,Amount);
 
-            pstmt.setInt(5,accountnumber);
+                pstmt.setInt(5,accountnumber);
 
-            pstmt.setLong(6,source);
+                pstmt.setLong(6,source);
 
-            pstmt.setString(7,type);
+                pstmt.setString(7,type);
 
-            pstmt.setInt(8,AccountBalance);
+                pstmt.setInt(8,AccountBalance);
 
-            status= (pstmt.executeUpdate()==1);
+                status= (pstmt.executeUpdate()==1);
+            }
+
+            catch (Exception e){
+                out.println(e.getMessage());
+            }
+
+    return  status;
         }
 
-        catch (Exception e){
-            out.println(e.getMessage());
+        public static void Showlast10transactions(){
+
         }
-
-return  status;
-    }
-
 
 }
