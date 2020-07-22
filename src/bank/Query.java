@@ -28,7 +28,12 @@ public class Query{
 
             //Connection conn;
            // conn = DriverManager.getConnection( "jdbc:mysql://localhost/Bankaccounts?useLegacyDatetimeCode=false", "root", "13801380");
-            System.out.println(Authentication(1000,2356));
+           // System.out.println(Authentication(1000,2356));
+            ResultSet rs1;
+            rs1 = ShowTransactionrecords(1000,1);
+            rs1.next();
+            System.out.println(rs1.getString("Datetime"));
+
 
 
 
@@ -234,8 +239,20 @@ public class Query{
     return  status;
         }
 
-        public static void Showlast10transactions(){
+        public static ResultSet ShowTransactionrecords(int Accountnumber,int number)throws SQLException{
+
+
+            Connection conn = DriverManager.getConnection(DB_URL,DB_USERNAME,DB_PASSWORD);
+
+            String query = "SELECT * FROM TRANSACTIONS WHERE ACCOUNTNUMBER=? LIMIT ?";
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setInt(1,Accountnumber);
+            pstmt.setInt(2,number);
+            ResultSet rs = pstmt.executeQuery();
+            return rs;
+
 
         }
+
 
 }
