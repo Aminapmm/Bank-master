@@ -16,7 +16,7 @@ public class Operations {
 
         if (auth == true) {
 
-            Accountbalance = Query.ShowInformation(accountnumber).getInt("amount");
+            Accountbalance = Query.ShowInformation(accountnumber).getInt("accountbalance");
 
 
             if (Query.ShowInformation(Destination).isFirst() == true&&amount<Accountbalance) {
@@ -32,7 +32,7 @@ public class Operations {
                             Query.InsertTransactionsRecord(accountnumber,"TRANSFER",amount,0,Destination,String.format("%d Tomans Has been Transfered from THIS ACCOUNT.",amount),Accountbalance);
                             Transfer receipt = new Transfer(accountnumber,Destination,amount,Accountbalance,"Done");
 
-                            Accountbalance=Query.ShowInformation(Destination).getInt("amount")+amount;
+                            Accountbalance=Query.ShowInformation(Destination).getInt("accountbalance")+amount;
 
                             Query.UpdateRecords(Destination,"ACCOUNTBALANCE",Integer.toString(Accountbalance));
                             Query.InsertTransactionsRecord(Destination,"TRANSFER",amount,accountnumber,0,String.format("%d Tomans Has been Transfered To THIS ACCOUNT.",amount),Accountbalance);

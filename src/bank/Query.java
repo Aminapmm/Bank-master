@@ -65,12 +65,13 @@ public class Query{
     }
     public static boolean OnlineAuthentication(int accountnumber,int ramzeDovom)throws SQLException{
 
-        boolean access=false;
+            boolean access=false;
 
+            Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+            String accountype = Query.ShowInformation(accountnumber).getString("ACCOUNTTYPE")+"ACCOUNTS";
 
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Bankaccounts", "root", "13801380");
+            String query = String.format("SELECT RAMZEDOVOM FROM  %s  WHERE accountnumber=?",accountype);
 
-            String query = "SELECT Ramzedovom FROM CUSTOMERSINFO WHERE accountnumber=?";
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setInt(1,accountnumber);
 
@@ -94,15 +95,19 @@ public class Query{
         PreparedStatement pstmt;
 
         pstmt = conn.prepareStatement("SELECT ACCOUNTTYPE FROM ACCOUNTHOLDERS WHERE ACCOUNTNUMBER=?");
-        String accounttype = pstmt.executeQuery().getString("ACCOUNTTYPE").toUpperCase();
+        pstmt.setInt(1,accountnumber);
 
-        if(accounttype=="CHECKING") { query = "SELECT * FROM CHECKINGACCOUNTS WHERE ACCOUNTNUMBER=?"; }
+        rs = pstmt.executeQuery();
+        rs.next();
+        String accounttype = rs.getString("ACCOUNTTYPE").toUpperCase()+"ACCOUNTS";
 
-        else if (accounttype=="SAVING") { query = "SELECT * FROM SAVINGACCOUNTS WHERE ACCOUNTNUMBER=?"; }
 
+        query = String.format("SELECT ACCOUNTHOLDERS.*, %s.* FROM ACCOUNTHOLDERS , %s WHERE ACCOUNTHOLDERS.ACCOUNTNUMBER=? AND %s.ACCOUNTNUMBER=?",accounttype,accounttype,accounttype);
+       // System.out.println(query);
 
         pstmt = conn.prepareStatement(query);
         pstmt.setInt(1, accountnumber);
+        pstmt.setInt(2, accountnumber);
         rs = pstmt.executeQuery();
         rs.next();
 
@@ -117,7 +122,7 @@ public class Query{
         Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
         boolean status=false;
         PreparedStatement pstmt;
-        pstmt = conn.prepareStatement("SELECT ACCOUNTTYPE FROM ACCOUNTHOLDERS WHERE ACCOUNTNUMBER = ?");
+        pstmt = conn.prepareStatement("SELECT ACCOUNTTYPE FROM ACCOUNTHOLDERS WHERE ACCOUNTHOLDERS.ACCOUNTNUMBER = ?");
         pstmt.setInt(1,accountnumber);
         String query = " ";
         ResultSet rs = pstmt.executeQuery();
