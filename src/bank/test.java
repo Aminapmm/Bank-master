@@ -2,6 +2,7 @@ package bank;
 import bank.time.*;
 import org.apache.commons.lang3.RandomStringUtils;
 
+import javax.management.ServiceNotFoundException;
 import java.math.BigInteger;
 import java.sql.*;
 import java.text.DateFormat;
@@ -12,27 +13,32 @@ import java.io.*;
 import java.util.Calendar;
 import java.util.Scanner;
 
+import static java.lang.System.out;
+
 public class test {
 
 
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException, ServiceNotFoundException {
 
-   //BankAccount account = new  BankAccount.builder().setFirstname("Mohammad").setLastname("Heydari").setNationalID(4657798).setAccounttype("Checking").GenerateAccountnumber().GenerateRamzeAvval().setPhonenumber(01151415515).setInterestrate(15).setAccountbalance(2000000).setRegistrationdate().setBirthdate(78,01,01).getAccount();
-   //System.out.println(Query.InsertCustomersRecords(account));
-    //System.out.println(account.getAccountnumber());
-
-//    public static boolean InsertTransactionsRecord(int accountnumber, String type, int Amount, int source, int destination, String description,int AccountBalance){
+        Connection conn = DriverManager.getConnection(Query.DB_URL,Query.DB_USERNAME,Query.DB_PASSWORD);
+        Query.UpdateRecords(3000,"ACCOUNTBALANCE","244000");
 
 
-        // final String DB_URL = "jdbc:mysql://localhost/bankaccounts?useLegacyDatetimeCode=false";
-       //  final String DB_USERNAME = "root";
-        // final String DB_PASSWORD = "13801380";
-        // Connection connection = DriverManager.getConnection(DB_URL,DB_USERNAME,DB_PASSWORD);
 
+        //String.format(query,"Accountholders");
+        //System.out.println(String.format("UPDATE %s SET ? = ? WHERE ACCOUNTNUMBER = ?"," ACCOUNTHOLDERS "));
+       //out.println(query);
 
-        //int a = Integer.parseInt(RandomStringUtils.randomNumeric(8));
-    //  System.out.println(a);
+        //pstmt.setInt(1,3000);
+       // boolean a = pstmt.execute();
+       // ResultSet RS = Query.ShowInformation(3000);
+
+    // System.out.println(Integer.valueOf("1515554424"));
+        //Savingaccount account = new Savingaccount.Savingaccountbuilder().setFirstname("Mohammad").setLastname("Heydari").setAccountbalance(154000).setAccountnumber(3000).setAccountype().setNationalID(111111).setPhonenumber(999955554).setBirthdate(PersianDate.now()).setRamzeAvval(1234).setRamzeDovom(1155).setRegistrationdate(PersianDate.now()).setTimeperiod(5).setInterestrate(22).getAccount();
+        //account.setPayoutamount();
+        //Query.InsertCustomersRecords(account);
+//
         /***
             Connection conn = DriverManager.getConnection( "jdbc:mysql://localhost/Bankaccounts?useLegacyDatetimeCode=false", "root", "13801380");
             Scanner input = new Scanner(System.in);

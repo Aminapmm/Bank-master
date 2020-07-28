@@ -1,11 +1,12 @@
 package bank;
 
+import javax.management.ServiceNotFoundException;
 import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Operations {
 
-    public static void Transfer(int accountnumber, int ramzedovom, int Destination, int amount)throws SQLException {
+    public static void Transfer(int accountnumber, int ramzedovom, int Destination, int amount)throws SQLException, ServiceNotFoundException {
         //TODO
 
         boolean auth=false;
@@ -27,13 +28,13 @@ public class Operations {
 
                             Accountbalance=Accountbalance-amount;
 
-                            Query.UpdateRecords(accountnumber,12,Integer.toString(Accountbalance));
+                            Query.UpdateRecords(accountnumber,"ACCOUNTBALANCE",Integer.toString(Accountbalance));
                             Query.InsertTransactionsRecord(accountnumber,"TRANSFER",amount,0,Destination,String.format("%d Tomans Has been Transfered from THIS ACCOUNT.",amount),Accountbalance);
                             Transfer receipt = new Transfer(accountnumber,Destination,amount,Accountbalance,"Done");
 
                             Accountbalance=Query.ShowInformation(Destination).getInt("amount")+amount;
 
-                            Query.UpdateRecords(Destination,12,Integer.toString(Accountbalance));
+                            Query.UpdateRecords(Destination,"ACCOUNTBALANCE",Integer.toString(Accountbalance));
                             Query.InsertTransactionsRecord(Destination,"TRANSFER",amount,accountnumber,0,String.format("%d Tomans Has been Transfered To THIS ACCOUNT.",amount),Accountbalance);
 
                             receipt.Print_Receipt();
@@ -61,7 +62,7 @@ public class Operations {
 
     }
 
-    public static void Withdraw(int accountnumber,int ramzeAvval,int amount)throws SQLException{
+    public static void Withdraw(int accountnumber,int ramzeAvval,int amount)throws SQLException,ServiceNotFoundException {
         //TODO:
 
 
@@ -72,7 +73,7 @@ public class Operations {
 
             if(Accountbalance>=amount) {
 
-                Query.UpdateRecords(accountnumber, 12, Integer.toString(Accountbalance - amount));
+                Query.UpdateRecords(accountnumber, "ACCOUNTBALANCE", Integer.toString(Accountbalance - amount));
 
                 int AccountBalance=Accountbalance-amount;
 
@@ -89,13 +90,13 @@ public class Operations {
             }
     }
 
-    public static void Deposit(int Accountnumber,int Ramzeavval,int Amount) throws SQLException {
+    public static void Deposit(int Accountnumber,int Ramzeavval,int Amount) throws SQLException,ServiceNotFoundException {
 
             boolean auth =  Query.Authentication(Accountnumber,Ramzeavval);
 
             if(auth==true){
                 int Accountbalance = Query.ShowInformation(Accountnumber).getInt("Amount");
-                boolean status = Query.UpdateRecords(Accountnumber,12,Integer.toString(Accountbalance+Amount));
+                boolean status = Query.UpdateRecords(Accountnumber,"ACCOUNTBALANCE",Integer.toString(Accountbalance+Amount));
                 if(status==true){
                     String description = String.format("%d TOMANS HAS BEEN DEPOSITED TO THIS ACCOUNT SUCCESFULLY.",Amount);
                     Query.InsertTransactionsRecord(Accountnumber,"Deposit",Amount,0,0,description,Accountbalance);

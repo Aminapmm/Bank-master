@@ -1,13 +1,12 @@
 package bank;
 
 import org.apache.commons.lang3.RandomStringUtils;
-
 import bank.time.*;
 
-import java.math.BigDecimal;
-import java.nio.charset.CharsetEncoder;
-import java.sql.SQLException;
-import java.util.Currency;
+import javax.management.ServiceNotFoundException;
+import java.sql.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 
@@ -25,7 +24,6 @@ public abstract class BankAccount {
     private int RamzeAvval;
     private int RamzeDovom;
     private int Accountbalance;
-    private double Interestrate;
     private PersianDate RegistrationDate;
 
     static Scanner input = new Scanner(System.in);
@@ -76,9 +74,6 @@ public abstract class BankAccount {
         Accountbalance = accountbalance;
     }
 
-    public void setInterestrate(double interestrate) {
-        Interestrate = interestrate;
-    }
 
     public void setRegistrationDate(PersianDate registrationDate) {
         RegistrationDate = registrationDate;
@@ -110,9 +105,7 @@ public abstract class BankAccount {
 
             this.Accountnumber = b.Accountnumber;
 
-
             this.Accountbalance = b.Accountbalance;
-
 
             this.RamzeAvval = b.RamzeAvval;
 
@@ -131,9 +124,6 @@ public abstract class BankAccount {
     }
 
 
-    public double getInterestrate () {
-        return this.Interestrate;
-    }
 
 
     public String getLastname () {
@@ -194,30 +184,6 @@ public abstract class BankAccount {
     }
 
 
-
-    //TODO:fix these two subclass
-
-
-
-    public static void main(String[] args) throws SQLException {
-
-       // BankAccount b = new Savingaccount.Savingaccountbuilder().getAccount();
-        //BankAccount A = new Savingaccount(b);
-       // builder b = new builder();
-
-
-        //System.out.println(s.getAccountype());
-    //BankAccount.Transfer(1000,5678,2000,184000);
-        //Operations.Deposit(1000,2356,5000);
-        //BankAccount.Withdraw(1000,2356,4000000);
-       // System.out.println(Query.OnlineAuthentication(1000,5678));
-       // System.out.println(Query.ShowInformation(1000).isFirst());
-        //Checkingaccount account1 = new Checkingaccount.Checkingaccountbuilder().setLastname("ahmadi").getAccount();
-
-
-
-    }
-
      static abstract class builder{
 
         private String Firstname;
@@ -232,7 +198,7 @@ public abstract class BankAccount {
         private int RamzeAvval;
         private int RamzeDovom;
         private int Accountbalance;
-        private double Interestrate;
+
 
         public builder setFirstname(String firstname) {
             Firstname = firstname;
@@ -294,10 +260,6 @@ public abstract class BankAccount {
             return this;
         }
 
-        public builder setInterestrate(double interestrate) {
-            Interestrate = interestrate;
-            return this;
-        }
 
         public  abstract BankAccount getAccount();
 
@@ -307,30 +269,75 @@ public abstract class BankAccount {
 
 }
 
-class Savingaccount extends BankAccount {
-    private int Periodtime;
+
+
+ class Savingaccount extends BankAccount {
+
+    private int Timeperiod;
+    private int MONTHLY_PAYOUT_AMOUNT;
+    private int Interestrate;
 
    private Savingaccount(Savingaccountbuilder Builder){
        super(Builder);
+       this.Timeperiod=Builder.Timeperiod;
+       this.MONTHLY_PAYOUT_AMOUNT=Builder.MONTHLY_PAYOUT_AMOUNT;
+       this.Interestrate=Builder.Interestrate;
    }
 
-    public static void main(String[] args) {
-        Savingaccount savingaccount = new Savingaccountbuilder().setLastname("amin").getAccount();
-        System.out.println(savingaccount.getLastname());
 
+
+   public int getTimeperiod(){
+       return this.Timeperiod;
+   }
+
+    public int getMONTHLY_PAYOUT_AMOUNT() {
+        return this.MONTHLY_PAYOUT_AMOUNT;
     }
 
+    public int getInterestrate(){
+       return this.Interestrate;
+    }
+
+     public void setPayoutamount(){
+         this.MONTHLY_PAYOUT_AMOUNT = (this.Interestrate*super.getAccountbalance()*this.Timeperiod/100)/12;
+     }
 
 
-    public void calculateinterest() {}
+     public static void main(String[] args) {
+         Savingaccount savingaccount = new Savingaccount.Savingaccountbuilder().setAccountbalance(50000).setTimeperiod(5).setInterestrate(18).getAccount();
+         savingaccount.setPayoutamount();
+         System.out.println(savingaccount.getMONTHLY_PAYOUT_AMOUNT());
 
+     }
 
     static class Savingaccountbuilder extends BankAccount.builder {
+
+       private int Timeperiod;
+       private int MONTHLY_PAYOUT_AMOUNT;
+       private int Interestrate;
+
+
+        public Savingaccountbuilder setpayoutamount(int amount){
+            this.MONTHLY_PAYOUT_AMOUNT=amount;
+            return this;
+        }
+
+        public Savingaccountbuilder setTimeperiod(int timeperiod){
+
+           this.Timeperiod = timeperiod;
+           return this;
+
+       }
+
+        //Annual Interest = The formula for Simple Interest (SI) is “principal x rate of interest x time period divided by 100” or (P x Rx T/100).
+        //Monthly-interest = Annual/12
+
 
 
         @Override
         public Savingaccountbuilder setFirstname(String firstname) {
-            return this;
+           super.setFirstname(firstname);
+           return this;
         }
 
         @Override
@@ -375,9 +382,9 @@ class Savingaccount extends BankAccount {
             return this;
         }
 
-        @Override
-        public Savingaccountbuilder setAccountype(String accountype) {
-            super.setAccountype(accountype);
+
+        public Savingaccountbuilder setAccountype() {
+            super.setAccountype("SAVING");
             return this;
         }
 
@@ -399,9 +406,9 @@ class Savingaccount extends BankAccount {
              return this;
         }
 
-        @Override
-        public Savingaccountbuilder setInterestrate(double interestrate) {
-             super.setInterestrate(interestrate);
+
+        public Savingaccountbuilder setInterestrate(int interestrate) {
+            this.Interestrate=interestrate;
              return this;
         }
 
@@ -418,16 +425,15 @@ class Savingaccount extends BankAccount {
 
 class CheckingAccount extends BankAccount{
 
-    public static void main(String[] args) {
-        CheckingAccount account = new CheckingAccount.Checkingbuilder().setAccountbalance(1151511).getAccount();
-        System.out.println(account.getAccountbalance());
-    }
 
     private CheckingAccount(Checkingbuilder Builder){
         super(Builder);
     }
 
     static class Checkingbuilder extends builder{
+
+
+
         @Override
         public Checkingbuilder setFirstname(String firstname) {
              super.setFirstname(firstname);
@@ -476,9 +482,8 @@ class CheckingAccount extends BankAccount{
              return this;
         }
 
-        @Override
-        public Checkingbuilder setAccountype(String accountype) {
-             super.setAccountype(accountype);
+        public Checkingbuilder setAccountype() {
+             super.setAccountype("CHECKING");
              return this;
         }
 
@@ -500,9 +505,9 @@ class CheckingAccount extends BankAccount{
             return this;
         }
 
-        @Override
-        public Checkingbuilder setInterestrate(double interestrate) {
-            super.setInterestrate(interestrate);
+
+        public Checkingbuilder setInterestrate(int interestrate) {
+        //    super.setInterestrate(interestrate);
             return this;
         }
 
