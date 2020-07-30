@@ -55,7 +55,8 @@ abstract class TRANSACTION {
 		return this.AccountBalance;
 	}
 
-	abstract  void Backup();
+
+	//TODO:THESE METHOD SHOULD BE CHANGE WITH Overrided toString method.
 	abstract void Print_Receipt();
 
 

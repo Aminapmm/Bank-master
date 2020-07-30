@@ -21,8 +21,17 @@ public class test {
 
     public static void main(String[] args) throws SQLException, ServiceNotFoundException {
 
-  Operations.Transfer(2000,1234,5006,145000);
-    //System.out.println(Query.ShowInformation(1000).getString("FIRSTNAME"));
+  //Operations.Transfer(2000,1234,5006,145000);
+        //CheckingAccount account = new CheckingAccount.Checkingbuilder().setFirstname("Amin").setLastname("Ahmadpour").setPhonenumber(930023195).setBirthdate(1380,02,23).setNationalID(1810607418).setAccountnumber().setRamzeAvval().setRamzeDovom().setAccountype().setAccountbalance(520000).setRegistrationdate().getAccount();
+       // Savingaccount account1 = new Savingaccount.Savingaccountbuilder().setFirstname("Amin").setLastname("Ahmadpour").setPhonenumber(930023195).setBirthdate(1380,02,23).setNationalID(1810607418).setAccountnumber().setRamzeAvval().setRamzeDovom().setAccountype().setAccountbalance(520000).setRegistrationdate().setTimeperiod(5).setInterestrate(18).getAccount();
+       // account1.setPayoutamount();
+        //out.println(account);
+       // Query.InsertCustomersRecords(account);
+        Operations.Transfer(  714634,5487,3000,125000);
+
+        //out.println(RandomStringUtils.randomNumeric(6));
+        //out.println(Query.Authentication(1000,1200));
+        //System.out.println(Query.ShowInformation(1000).getString("FIRSTNAME"));
         //out.println( String.format(ex,"Amin"));
 
     }

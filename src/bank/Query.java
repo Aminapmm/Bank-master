@@ -17,6 +17,8 @@ import java.util.concurrent.ExecutorService;
 
 import static java.lang.System.*;
 
+//TODO:WHEN INSERTING RECORDS IN ACCOUNT TABLES CHECK FOR EXISTANCE OF THE SAME RECORD...AND THEN TAKE THE ACTION
+
 public class Query{
 
     //static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
@@ -24,33 +26,20 @@ public class Query{
     static final String DB_USERNAME = "root";
     static final String DB_PASSWORD = "13801380";
 
-
-
-    public static void main(String[] args) {
-        try {
-
-
-            //Connection conn;
-           // conn = DriverManager.getConnection( "jdbc:mysql://localhost/Bankaccounts?useLegacyDatetimeCode=false", "root", "13801380");
-           // System.out.println(Authentication(1000,2356));
-            ResultSet rs1;
-            rs1 = ShowTransactionrecords(1000,1);
-            rs1.next();
-            System.out.println(rs1.getString("Datetime"));
-
-
-        }
-        catch (Exception e) {
-            out.println(e.getMessage());
-        }
-    }
-
-
+/***
+ *
+ *THIS METHOD IS FOT AUTHENTICATING THE BEFORE DOING WORKS LIKE(WITHDRAW,DEPOSIT,CHANGING THE PASSWORDS,...)
+ * It'll take  accountnumber & Ramze-avval and  check it with the database then it will  return true/false.
+ *
+***/
     public static boolean Authentication(int accountnumber,int ramzeAvval)throws SQLException{
         boolean access=false;
 
             Connection conn = DriverManager.getConnection( DB_URL,DB_USERNAME,DB_PASSWORD);
-            String query = "SELECT * FROM CUSTOMERSINFO WHERE accountnumber=?";
+
+            String ACCOUNTTYPE = Query.ShowInformation(accountnumber).getString("ACCOUNTTYPE")+"ACCOUNTS";
+
+            String query = String.format("SELECT * FROM %s WHERE accountnumber=?",ACCOUNTTYPE);
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setInt(1,accountnumber);
             ResultSet rs = pstmt.executeQuery();
@@ -61,8 +50,15 @@ public class Query{
             }
 
         return access;
-
     }
+
+     /***
+      * Another authentication method that takes accountnumber & Ramze-dovom.
+      * this method used in Online Services Like (Transfering,Receiving Last n transactions,Receiving the Accountbalance)
+      * Same as the Previuos Method it'll Check the Parameter with database then return boolean true/false
+      ***/
+
+
     public static boolean OnlineAuthentication(int accountnumber,int ramzeDovom)throws SQLException{
 
             boolean access=false;
@@ -85,12 +81,19 @@ public class Query{
         return access;
     }
 
-
+    /***
+     * This method is To Show an accountholder information when needed.
+     * It'll return a resultset With Personal informarion & Accountinformation
+     *
+     * @param accountnumber
+     * @return
+     * @throws SQLException
+     */
 
     public static  ResultSet ShowInformation(int accountnumber)throws SQLException {
 
         ResultSet rs=null;
-        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Bankaccounts", "root", "13801380");
+        Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
         String query="";
         PreparedStatement pstmt;
 
@@ -293,7 +296,7 @@ public class Query{
 
             boolean status=false;
 
-                Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Bankaccounts", "root", "13801380");
+                Connection conn = DriverManager.getConnection(DB_URL,DB_USERNAME,DB_PASSWORD);
 
                 String query = "INSERT INTO TRANSACTIONS (datetime,Destination,description,amount,accountnumber,source,receipttype,Accountbalance) VALUES(?,?,?,?,?,?,?,?)";
 
@@ -326,6 +329,7 @@ public class Query{
 
         public static ResultSet ShowTransactionrecords(int Accountnumber,int number)throws SQLException{
 
+        //TODO:It's Better to Override toString Method,And Print the Records!
 
                 Connection conn = DriverManager.getConnection(DB_URL,DB_USERNAME,DB_PASSWORD);
 

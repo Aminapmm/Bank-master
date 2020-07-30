@@ -4,6 +4,9 @@ import javax.management.ServiceNotFoundException;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+//TODO:Method To Change The Password whenever the account owner wanted.
+
+
 public class Operations {
 
     public static void Transfer(int accountnumber, int ramzedovom, int Destination, int amount)throws SQLException, ServiceNotFoundException {
@@ -34,7 +37,7 @@ public class Operations {
 
                             Accountbalance=Query.ShowInformation(Destination).getInt("accountbalance")+amount;
 
-                            Query.UpdateRecords(Destination,"ACCOUNTBALANCE",Integer.toString(Accountbalance));
+                            Query.UpdateRecords(Destination,"ACCOUNTBALANCE",Integer.toString(Accountbalance+amount));
                             Query.InsertTransactionsRecord(Destination,"TRANSFER",amount,accountnumber,0,String.format("%d Tomans Has been Transfered To THIS ACCOUNT.",amount),Accountbalance);
 
                             receipt.Print_Receipt();
@@ -67,9 +70,10 @@ public class Operations {
 
 
             boolean auth = Query.Authentication(accountnumber, ramzeAvval);
+
             Withdraw w;
 
-            int Accountbalance = Query.ShowInformation(accountnumber).getInt("Amount");
+            int Accountbalance = Query.ShowInformation(accountnumber).getInt("Accountbalance");
 
             if(Accountbalance>=amount) {
 
@@ -95,7 +99,7 @@ public class Operations {
             boolean auth =  Query.Authentication(Accountnumber,Ramzeavval);
 
             if(auth==true){
-                int Accountbalance = Query.ShowInformation(Accountnumber).getInt("Amount");
+                int Accountbalance = Query.ShowInformation(Accountnumber).getInt("Accountbalance");
                 boolean status = Query.UpdateRecords(Accountnumber,"ACCOUNTBALANCE",Integer.toString(Accountbalance+Amount));
                 if(status==true){
                     String description = String.format("%d TOMANS HAS BEEN DEPOSITED TO THIS ACCOUNT SUCCESFULLY.",Amount);
