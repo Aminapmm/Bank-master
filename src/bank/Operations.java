@@ -40,7 +40,7 @@ public class Operations {
                             Query.UpdateRecords(Destination,"ACCOUNTBALANCE",Integer.toString(Accountbalance+amount));
                             Query.InsertTransactionsRecord(Destination,"TRANSFER",amount,accountnumber,0,String.format("%d Tomans Has been Transfered To THIS ACCOUNT.",amount),Accountbalance);
 
-                            receipt.Print_Receipt();
+                            System.out.println(receipt);
 
                     }
 
@@ -86,7 +86,7 @@ public class Operations {
 
                 w = new Withdraw(accountnumber,amount,AccountBalance);
 
-                w.Print_Receipt();
+                System.out.println(w);
             }
 
             else {
@@ -105,7 +105,8 @@ public class Operations {
                     String description = String.format("%d TOMANS HAS BEEN DEPOSITED TO THIS ACCOUNT SUCCESFULLY.",Amount);
                     Query.InsertTransactionsRecord(Accountnumber,"Deposit",Amount,0,0,description,Accountbalance);
                     Deposit receipt = new Deposit(Accountnumber,Amount,Accountbalance+Amount);
-                    receipt.Print_Receipt();
+
+                    System.out.println(receipt);
                 }
 
             else {

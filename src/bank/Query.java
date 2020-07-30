@@ -117,9 +117,18 @@ public class Query{
             return rs;
         }
 
-    public static boolean UpdateRecords(int accountnumber,String field,String data) throws SQLException, ServiceNotFoundException {
+    /***
+     * This Method Used to Update Records in Account Tables...!
+     * More Specifically It's Use for Updating Information (Personal or account info like passwords and Stuff Like that.)
+     * The Output is True/False
+     *
+     * @param accountnumber
+     * @param field
+     * @param data
 
-        //TODO:UPDATE ACCOUNTS INFO IN DATABASE LIKE CHANGE THE AMOUNT AFTER TRANSFER...OR DEPOSIT OR ...WITHDRAW
+
+     */
+    public static boolean UpdateRecords(int accountnumber,String field,String data) throws SQLException, ServiceNotFoundException {
 
 
         Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
