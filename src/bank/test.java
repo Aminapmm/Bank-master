@@ -27,7 +27,8 @@ public class test {
        // account1.setPayoutamount();
         //out.println(account);
        // Query.InsertCustomersRecords(account);
-        Operations.Transfer(  714634,5487,3000,125000);
+        //Operations.Transfer(  714634,5487,3000,125000);
+        Operations.Changepassword(2000);
 
         //out.println(RandomStringUtils.randomNumeric(6));
         //out.println(Query.Authentication(1000,1200));

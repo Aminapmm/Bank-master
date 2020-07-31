@@ -18,6 +18,7 @@ import java.util.concurrent.ExecutorService;
 import static java.lang.System.*;
 
 //TODO:WHEN INSERTING RECORDS IN ACCOUNT TABLES CHECK FOR EXISTANCE OF THE SAME RECORD...AND THEN TAKE THE ACTION
+//TODO:CREATE A STATUS COLUMN FOR ACCOUNTS AND SHOW STATUS(CLOSED,OPEN,TEMPRORARILY CLOSED)
 
 public class Query{
 
@@ -218,7 +219,7 @@ public class Query{
         return status;
     }
 
-    public static void InsertCustomersRecords(CheckingAccount account)throws SQLException {
+    public static boolean InsertCustomersRecords(CheckingAccount account)throws SQLException {
 
                 boolean status=false;
 
@@ -251,15 +252,15 @@ public class Query{
                 pstmt.setInt(5,account.getAccountbalance());
                 pstmt.setDate(6,Date.valueOf(account.getRegistrationDate().toString()));
 
-                pstmt.executeUpdate();
+                //pstmt.executeUpdate();
 
 
-                //status=(pstmt.executeUpdate()==1?true:false);
+                status=(pstmt.executeUpdate()==1?true:false);
 
-                //return status;
+                return status;
         }
 
-    public static void InsertCustomersRecords(Savingaccount account)throws SQLException {
+    public static boolean InsertCustomersRecords(Savingaccount account)throws SQLException {
 
         boolean status=false;
 
@@ -294,11 +295,11 @@ public class Query{
         pstmt.setInt(8,account.getInterestrate());
         pstmt.setInt(9,account.getTimeperiod());
 
-        pstmt.executeUpdate();
+        //pstmt.executeUpdate();
 
-        //status=(pstmt.executeUpdate()==1?true:false);
+        status=(pstmt.executeUpdate()==1?true:false);
 
-        //return status;
+        return status;
     }
 
     public static boolean InsertTransactionsRecord(int accountnumber, String type, int Amount, int source, int destination, String description,int AccountBalance) throws SQLException{

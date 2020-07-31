@@ -9,13 +9,15 @@ import java.util.Scanner;
 
 public class Operations {
 
+    static Scanner input = new Scanner(System.in);
+
     public static void Transfer(int accountnumber, int ramzedovom, int Destination, int amount)throws SQLException, ServiceNotFoundException {
         //TODO
 
         boolean auth=false;
         int Accountbalance;
         auth= Query.OnlineAuthentication(accountnumber,ramzedovom);
-        Scanner input = new Scanner(System.in);
+
 
         if (auth == true) {
 
@@ -107,16 +109,63 @@ public class Operations {
                     Deposit receipt = new Deposit(Accountnumber,Amount,Accountbalance+Amount);
 
                     System.out.println(receipt);
-                }
+                    }
 
             else {
                 System.out.println("Deposit the Cash Failed,Try Again Later.");
             }
 
-        }
+            }
+
         else {
             System.out.println("Access Denied.");
         }
 
     }
+
+    public static boolean Changepassword(int Accountnumber) throws SQLException, ServiceNotFoundException {
+        System.out.printf("Which pass Do you Want to change?\n1)Ramzeavval\n2)Ramzedovom\n");
+        int whichpass = input.nextInt();
+        String Whichpass = (whichpass==1)?"RAMZEAVVAL":"RAMZEDOVOM";
+        System.out.println("Enter Your Old Password:");
+        int Oldpass = input.nextInt();
+        for(int i=3;i>0;i--){
+
+
+
+            if(Oldpass!=Query.ShowInformation(Accountnumber).getInt(Whichpass)){
+
+                System.out.printf("Password is Incorrect,Try again(%d Attempts Left):",i-1);
+                Oldpass = input.nextInt();
+
+                if(i==1){
+                    System.out.println("Sorry You Have Entered Wrong Password For 3 time your daily Limit has exceded.");
+                    return false;
+                }
+                continue;
+            }
+
+            else {
+                break;
+            }
+
+        }
+
+        System.out.println("Enter Your New Password");
+        int newpass=input.nextInt();
+
+        switch (whichpass) {
+
+            case 1:
+                Query.UpdateRecords(Accountnumber, "RAMZEAVVAL", Integer.toString(newpass));
+                break;
+
+            case 2:
+                Query.UpdateRecords(Accountnumber, "RAMZEDOVOM", Integer.toString(newpass));
+                break;
+        }
+        System.out.println("Your Password Changed Succesfully.");
+        return true ;
+    }
+
 }
