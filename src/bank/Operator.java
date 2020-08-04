@@ -2,117 +2,132 @@ package bank;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Scanner;
 import bank.time.*;
 
 public class Operator {
 
     private static Operator OperatorInstance;
-    private Operator(){};
-    public static Operator get_instance(){
-        if(OperatorInstance==null){
-            return OperatorInstance=new Operator();
+
+    private Operator() {}
+
+    public static Operator get_instance() {
+        if (OperatorInstance == null) {
+            return OperatorInstance = new Operator();
         }
 
         return OperatorInstance;
     }
 
 
+    public void buildaccount() throws SQLException {
 
-    public static void buildaccount(int Case) {
-
-        String firstname = "";
-        String lastname = "";
-        String fathername = "";
-        long phonenumber = 0;
-        int accountnumber = 0;
-        long nationalid = 0;
+        String firstname ;
+        String lastname ;
+        String fathername ;
+        long phonenumber ;
+        int accountnumber ;
+        long nationalid ;
         PersianDate birthdate;
         // PersianDate registrationdate;
         String accountype;
         // int ramzeavval;
         // int ramzedovom;
         int accountbalance;
-        double interestrate;
-
-        BankAccount.builder Builder ;
-        //BankAccount.Savingaccountbuilder account;
-       // Builder = new BankAccount.builder().setFirstname("amin");
-
-        switch (Case) {
+        int interestrate;
 
 
+                Scanner input = new Scanner(System.in);
+                System.out.println("Enter Your Firstname:");
+                firstname = input.next();
+                System.out.println("Enter Your Lastname:");
+                lastname = input.next();
+                System.out.println("Enter you Fathername:");
+                fathername = input.next();
+                System.out.println("Enter Your National ID:");
+                nationalid = input.nextLong();
+                System.out.println("Enter Your Phonenumber:");
+                phonenumber = input.nextLong();
 
-            case (1):
+                System.out.println("Enter Your Birthdate year:");
+                int yy =input.nextInt();
 
-            Scanner input = new Scanner(System.in);
-            System.out.println("Enter Your Firstname:");
-            firstname = input.next();
-            System.out.println("Enter Your Lastname:");
-            lastname = input.next();
-            System.out.println("Enter you Fathername:");
-            fathername = input.next();
-            System.out.println("Enter Your National ID:");
-            nationalid = input.nextLong();
-            System.out.println("Enter Your Phonenumber:");
-            phonenumber = input.nextLong();
+                System.out.println("Enter Your Birthdate month:");
+                int MM =input.nextInt();
 
-            System.out.println("Enter Your Birthdate (YEAR-MONTH-DAY):");
+                System.out.println("Enter Your Birthdate day:");
+                int dd = input.nextInt();
 
-            String birthdate1 = input.next();
+                birthdate = PersianDate.of(yy,MM,dd);
 
-            int yy = Integer.parseInt(birthdate1, 0, 4, 1);
+                System.out.printf("What type of Account do you want to open:\n1)Checking\n2)Saving\n");
+                accountype = input.next().toUpperCase();
 
-            int MM = Integer.parseInt(birthdate1, 5, 7, 1);
+                System.out.println("Enter Your Amount:");
 
-            int dd = Integer.parseInt(birthdate1, 8, 10, 1);
+                accountbalance = input.nextInt();
 
-            //birthdate = PersianDate.of(yy,MM,dd);
+        switch (accountype) {
 
-            System.out.println("Enter Your Account TYPE:");
+            case "SAVING":
 
-            accountype = input.next();
 
             System.out.println("Enter Your Interest RATE:");
 
-            interestrate = input.nextDouble();
+            interestrate = input.nextInt();
 
-            System.out.println("Enter Your Amount:");
+            System.out.println("How long you want to keep your money in the bank?");
 
-            accountbalance = input.nextInt();
+            int time_period = input.nextInt();
 
+                Savingaccount.Savingaccountbuilder savingaccountbuilder = new Savingaccount.Savingaccountbuilder();
+                savingaccountbuilder.setFirstname(firstname);
+                savingaccountbuilder.setLastname(lastname);
+                savingaccountbuilder.setNationalID(nationalid);
+                savingaccountbuilder.setPhonenumber(phonenumber);
+                savingaccountbuilder.setBirthdate(yy,MM,dd);
+                savingaccountbuilder.setAccountnumber();
+                savingaccountbuilder.setRamzeAvval();
+                savingaccountbuilder.setRamzeDovom();
+                savingaccountbuilder.setRegistrationdate();
+                savingaccountbuilder.setInterestrate(interestrate);
+                savingaccountbuilder.setTimeperiod(time_period);
+                savingaccountbuilder.setAccountbalance(accountbalance);
+                savingaccountbuilder.setAccountype();
+                savingaccountbuilder.setStatus();
+                Savingaccount savingaccount = savingaccountbuilder.getAccount();
+                savingaccount.setPayoutamount();
+                System.out.println(savingaccount);
+                Query.InsertCustomersRecords(savingaccount);
+                break;
 
-            //return Builder.getAccount();
+                case "CHECKING":
 
-            case (2):
-                try {
-                    Connection conn;
-                    conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Bankaccounts", "root", "13801380");
-
-                }
-                catch (Exception e){
-                    System.out.println(e.getMessage());
-                }
-                int a = 1000;
-                //Builder.setFirstname();
-                /***
-                Builder.setLastname(lastname);
-                Builder.setFathertname(fathername);
-                Builder.setNationalID(nationalid);
-                Builder.setPhonenumber(phonenumber);
-                Builder.setBirthdate(yy, MM, dd);
-                Builder.setFirstname(firstname);
-                Builder.setAccounttype(accountype);
-                Builder.setInterestrate(interestrate);
-                Builder.setAmount(amount);
-                Builder.GenerateAccountnumber();
-                Builder.GenerateRamzeAvval();
-                Builder.GenerateRamzeDovom();
-                Builder.setRegistrationdate();
-
-***/
-                //return Builder.getAccount();
+                CheckingAccount.Checkingbuilder Checkingaccountbuilder = new CheckingAccount.Checkingbuilder();
+                Checkingaccountbuilder.setFirstname(firstname);
+                Checkingaccountbuilder.setLastname(lastname);
+                Checkingaccountbuilder.setNationalID(nationalid);
+                Checkingaccountbuilder.setBirthdate(yy,MM,dd);
+                Checkingaccountbuilder.setPhonenumber(phonenumber);
+                Checkingaccountbuilder.setAccountbalance(accountbalance);
+                Checkingaccountbuilder.setAccountype(accountype);
+                Checkingaccountbuilder.setRegistrationdate();
+                Checkingaccountbuilder.setAccountnumber();
+                Checkingaccountbuilder.setRamzeAvval();
+                Checkingaccountbuilder.setRamzeDovom();
+                Checkingaccountbuilder.setStatus();
+                CheckingAccount checkingAccount = Checkingaccountbuilder.getAccount();
+                System.out.println(checkingAccount);
+                Query.InsertCustomersRecords(checkingAccount);
+                break;
         }
-       // return Builder.getAccount();
+
+    }
+
+    public static void main(String[] args) throws SQLException {
+        Operator op = Operator.get_instance();
+        op.buildaccount();
+
     }
 }

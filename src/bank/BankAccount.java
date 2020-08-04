@@ -23,6 +23,7 @@ public abstract class BankAccount {
     private int RamzeDovom;
     private int Accountbalance;
     private PersianDate RegistrationDate;
+    private String Status;
 
     static Scanner input = new Scanner(System.in);
 
@@ -60,6 +61,8 @@ public abstract class BankAccount {
             this.RamzeDovom = b.RamzeDovom;
 
             this.RegistrationDate = b.Registrationdate;
+
+            this.Status = b.Status;
 
     }
 
@@ -118,7 +121,7 @@ public abstract class BankAccount {
         return this.RamzeAvval;
     }
 
-
+    public String getStatus(){return this.Status;}
 
     public int getRamzeDovom () {
         return this.RamzeDovom;
@@ -143,8 +146,13 @@ public abstract class BankAccount {
         private int RamzeAvval;
         private int RamzeDovom;
         private int Accountbalance;
+        private String Status;
 
 
+        public builder setStatus(){
+            this.Status="Open";
+            return this;
+        }
         public builder setFirstname(String firstname) {
             Firstname = firstname;
             return this;
@@ -244,7 +252,6 @@ public abstract class BankAccount {
              this.MONTHLY_PAYOUT_AMOUNT = (this.Interestrate*super.getAccountbalance()*this.Timeperiod/100)/12;
          }
 
-         //TODO:NOT COMPLETE
          @Override
          public String toString(){
            return String.format("Firstname: %s\nLastname: %s\nNationalID: %d\nBirthdate: %s\nPhonenumber: %d\nAccountnumber: %d\nAccountbalance: %d\nMonthlyPayout: %d\nInterestrate: %d\nHoldDuration: %d\nRamze-Avval: %d\nRamze-Dovom: %d\nRegisterdate: %s\n",this.getFirstname(),this.getLastname(),this.getNationalID(),this.getBirthdate(),this.getPhonenumber(),this.getAccountnumber(),this.getAccountbalance(),this.getMONTHLY_PAYOUT_AMOUNT(),this.getInterestrate(),this.getTimeperiod(),this.getRamzeAvval(),this.getRamzeAvval(),this.getRegistrationDate());
@@ -353,6 +360,11 @@ public abstract class BankAccount {
                  return this;
             }
 
+            public Savingaccountbuilder setStatus(){
+                super.setStatus();
+                return this;
+            }
+
 
             @Override
             public Savingaccount getAccount() {
@@ -377,7 +389,6 @@ public abstract class BankAccount {
         }
 
         static class Checkingbuilder extends builder{
-
 
 
             @Override
@@ -424,6 +435,11 @@ public abstract class BankAccount {
                 return this;
             }
 
+            public Checkingbuilder setStatus(){
+                super.setStatus();
+                return this;
+            }
+
 
             public Checkingbuilder setRegistrationdate() {
 
@@ -462,6 +478,7 @@ public abstract class BankAccount {
             public CheckingAccount getAccount(){
                 return new CheckingAccount(this);
             }
+
         }
     }
 

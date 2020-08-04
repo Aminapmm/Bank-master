@@ -1,25 +1,36 @@
 package bank;
 
+import bank.time.PersianDate;
+
 import javax.management.ServiceNotFoundException;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDate;
 import java.util.Scanner;
 
-//TODO:Method To Change The Password whenever the account owner wanted.
 
 
 public class Operations {
 
     static Scanner input = new Scanner(System.in);
 
-    public static void Transfer(int accountnumber, int ramzedovom, int Destination, int amount)throws SQLException, ServiceNotFoundException {
-        //TODO
+    /***
+     * Tranfer Method to transfer money with these parameters.
+     * it will take ramze dovom from user and check it with the database then the user'll be allowed to transfer.
+     *
+     * @param accountnumber
+     * @param Destination
+     * @param amount
+     * @throws SQLException
+     * @throws ServiceNotFoundException
+     */
 
-        boolean auth=false;
-        int Accountbalance;
-        auth= Query.OnlineAuthentication(accountnumber,ramzedovom);
 
+    public static void Transfer(int accountnumber, int Destination, int amount)throws SQLException, ServiceNotFoundException {
 
-        if (auth == true) {
+        //TODO:NEED SOME CLEANING AND TO BE MORE USER FRIENDLY.
+
+            boolean auth=false;
+            int Accountbalance;
 
             Accountbalance = Query.ShowInformation(accountnumber).getInt("accountbalance");
 
@@ -34,44 +45,37 @@ public class Operations {
                             Accountbalance=Accountbalance-amount;
 
                             Query.UpdateRecords(accountnumber,"ACCOUNTBALANCE",Integer.toString(Accountbalance));
-                            Query.InsertTransactionsRecord(accountnumber,"TRANSFER",amount,0,Destination,String.format("%d Tomans Has been Transfered from THIS ACCOUNT.",amount),Accountbalance);
-                            Transfer receipt = new Transfer(accountnumber,Destination,amount,Accountbalance,"Done");
+                            Query.InsertTransactionsRecord(accountnumber,"TRANSFER",amount,0,Destination,String.format("%d Tomans Has been Transfered from This Account.",amount),Accountbalance);
+                            Transfer receipt = new Transfer(accountnumber,Destination,amount,Accountbalance);
 
                             Accountbalance=Query.ShowInformation(Destination).getInt("accountbalance")+amount;
 
                             Query.UpdateRecords(Destination,"ACCOUNTBALANCE",Integer.toString(Accountbalance+amount));
-                            Query.InsertTransactionsRecord(Destination,"TRANSFER",amount,accountnumber,0,String.format("%d Tomans Has been Transfered To THIS ACCOUNT.",amount),Accountbalance);
-
+                            Query.InsertTransactionsRecord(Destination,"TRANSFER",amount,accountnumber,0,String.format("%d Tomans Has been Transfered To This Account.",amount),Accountbalance);
                             System.out.println(receipt);
 
                     }
 
             }
 
-            else if(amount>Accountbalance){
-                System.out.println("Unfortunately Your AccountBalance is less than Your Entered Amount");
+                else if(amount>Accountbalance){
+                    System.out.println("Unfortunately Your AccountBalance is less than Your Entered Amount");
+                }
+
+
+                else if(Query.ShowInformation(Destination).isFirst()==false){
+                    System.out.println("Destination Account nubmer not found in System try again.");
+                }
+
             }
 
 
-            else if(Query.ShowInformation(Destination).isFirst()==false){
-                System.out.println("Destination Account nubmer not found in System try again.");
-            }
+
+    public static void Withdraw(int accountnumber,int amount)throws SQLException,ServiceNotFoundException {
+        //TODO:Check this and test it.
 
 
-        }
-
-        else{
-            System.out.println("Access Denied.");
-        }
-
-
-    }
-
-    public static void Withdraw(int accountnumber,int ramzeAvval,int amount)throws SQLException,ServiceNotFoundException {
-        //TODO:
-
-
-            boolean auth = Query.Authentication(accountnumber, ramzeAvval);
+           // boolean auth = Query.Authentication(accountnumber, ramzeAvval);
 
             Withdraw w;
 
@@ -79,93 +83,129 @@ public class Operations {
 
             if(Accountbalance>=amount) {
 
-                Query.UpdateRecords(accountnumber, "ACCOUNTBALANCE", Integer.toString(Accountbalance - amount));
+                    Query.UpdateRecords(accountnumber, "ACCOUNTBALANCE", Integer.toString(Accountbalance - amount));
 
-                int AccountBalance=Accountbalance-amount;
+                    int AccountBalance=Accountbalance-amount;
 
-                String description=String.format("%d TOMANS Withdrawn Successfully From this Account.",amount);
-                Query.InsertTransactionsRecord(accountnumber,"Withdraw",amount,0,0,description,AccountBalance);
+                    String description=String.format("%d TOMANS Withdrawn Successfully From this Account.",amount);
+                    Query.InsertTransactionsRecord(accountnumber,"Withdraw",amount,0,0,description,AccountBalance);
 
-                w = new Withdraw(accountnumber,amount,AccountBalance);
+                    w = new Withdraw(accountnumber,amount,AccountBalance);
 
-                System.out.println(w);
+                    System.out.println(w);
             }
 
             else {
-                System.out.println("Your Entered Amount for Withdraw is More Than your Accountbalance. ");
+                    System.out.println("Your Entered Amount for Withdraw is More Than your Accountbalance. ");
             }
     }
 
-    public static void Deposit(int Accountnumber,int Ramzeavval,int Amount) throws SQLException,ServiceNotFoundException {
+    public static void Deposit(int Accountnumber,int Amount) throws SQLException,ServiceNotFoundException {
 
-            boolean auth =  Query.Authentication(Accountnumber,Ramzeavval);
+        System.out.println("Enter your Password:");
+        int Ramzeavval = input.nextInt();
+        //boolean auth =  Query.Authentication(Accountnumber,Ramzeavval);
 
-            if(auth==true){
-                int Accountbalance = Query.ShowInformation(Accountnumber).getInt("Accountbalance");
-                boolean status = Query.UpdateRecords(Accountnumber,"ACCOUNTBALANCE",Integer.toString(Accountbalance+Amount));
-                if(status==true){
-                    String description = String.format("%d TOMANS HAS BEEN DEPOSITED TO THIS ACCOUNT SUCCESFULLY.",Amount);
-                    Query.InsertTransactionsRecord(Accountnumber,"Deposit",Amount,0,0,description,Accountbalance);
-                    Deposit receipt = new Deposit(Accountnumber,Amount,Accountbalance+Amount);
 
-                    System.out.println(receipt);
-                    }
+                        int Accountbalance = Query.ShowInformation(Accountnumber).getInt("Accountbalance");
+                        Accountbalance += Amount;
+                        System.out.println(Accountbalance);
+                        boolean status = Query.UpdateRecords(Accountnumber,"ACCOUNTBALANCE",Integer.toString(Accountbalance));
+                        if(status==true){
+                            String description = String.format("%d TOMANS HAS BEEN DEPOSITED TO THIS ACCOUNT SUCCESFULLY.",Amount);
+                            Query.InsertTransactionsRecord(Accountnumber,"Deposit",Amount,0,0,description,Accountbalance);
+                            Deposit receipt = new Deposit(Accountnumber,Amount,Accountbalance);
+                            receipt.setDESCRIPTION("DONE.");
 
-            else {
-                System.out.println("Deposit the Cash Failed,Try Again Later.");
+                            System.out.println(receipt);
+                        }
+
+                else {
+                    System.out.println("Deposit the Cash Failed,Try Again Later.");
+                }
             }
 
-            }
 
-        else {
-            System.out.println("Access Denied.");
-        }
-
-    }
 
     public static boolean Changepassword(int Accountnumber) throws SQLException, ServiceNotFoundException {
-        System.out.printf("Which pass Do you Want to change?\n1)Ramzeavval\n2)Ramzedovom\n");
-        int whichpass = input.nextInt();
-        String Whichpass = (whichpass==1)?"RAMZEAVVAL":"RAMZEDOVOM";
-        System.out.println("Enter Your Old Password:");
-        int Oldpass = input.nextInt();
-        for(int i=3;i>0;i--){
+
+                System.out.printf("Which pass Do you Want to change?\n1)Ramzeavval\n2)Ramzedovom\n");
+                int whichpass = input.nextInt();
+                String Whichpass = (whichpass==1)?"RAMZEAVVAL":"RAMZEDOVOM";
 
 
+                System.out.println("Enter Your New Password");
+                int newpass=input.nextInt();
 
-            if(Oldpass!=Query.ShowInformation(Accountnumber).getInt(Whichpass)){
+                switch (whichpass) {
 
-                System.out.printf("Password is Incorrect,Try again(%d Attempts Left):",i-1);
-                Oldpass = input.nextInt();
+                    case 1:
+                        Query.UpdateRecords(Accountnumber, "RAMZEAVVAL", Integer.toString(newpass));
+                        break;
 
-                if(i==1){
-                    System.out.println("Sorry You Have Entered Wrong Password For 3 time your daily Limit has exceded.");
-                    return false;
+                    case 2:
+                        Query.UpdateRecords(Accountnumber, "RAMZEDOVOM", Integer.toString(newpass));
+                        break;
                 }
-                continue;
+                System.out.println("Your Password Changed Succesfully.");
+                return true ;
             }
 
-            else {
-                break;
+
+    public static void Changestate(int accountnumber,int ramzeavval )throws SQLException,ServiceNotFoundException{
+
+
+        boolean access = Query.Authentication(accountnumber,ramzeavval);
+        if(access==true){
+
+            System.out.printf("What do you want to do with this Account?\n1)Open\n2)Close\n3)Temprorarily Block");
+
+            int state = input.nextInt();
+
+            switch (state){
+
+                    case 1:
+                        Query.UpdateRecords(accountnumber,"STATUS","Open");
+                        break;
+
+                    case 2:
+                        Query.UpdateRecords(accountnumber,"STATUS","CLOSE");
+                        break;
+
+                    case 3:
+                        Query.UpdateRecords(accountnumber,"STATUS","BLOCKED");
+                        break;
             }
+        }
+
+        else {
+            System.out.println("Password is Incorrect.");
+        }
+
+    }
+
+    public static void Interestpayout()throws ServiceNotFoundException,SQLException{
+        Connection conn = DriverManager.getConnection(Query.DB_URL,Query.DB_USERNAME,Query.DB_PASSWORD);
+        Statement stmt=conn.createStatement();
+        String query="SELECT * FROM SAVINGACCOUNTS";
+        ResultSet rs = stmt.executeQuery(query);
+        int day_of_month = PersianDate.now().getDayOfMonth();
+        while(rs.next()){
+
+             LocalDate Registerdate = rs.getDate("REGISTERDATE").toLocalDate();
+             int Registerday = Registerdate.getDayOfMonth();
+             int accountnumber = rs.getInt("ACCOUNTNUMBER");
+             int payout_amount = rs.getInt("MONTHLYPAYOUT");
+             int accountbalance = rs.getInt("ACCOUNTBALANCE");
+             String description = String.format("%d0 RIALS DEPOSITED TO YOUR ACCOUNT FOR  MONTHLY INTEREST PAYOUT",payout_amount);
+
+            if(day_of_month==Registerday){
+                 Query.UpdateRecords(accountnumber,"accountbalance",Integer.toString(payout_amount+accountbalance));
+                 Query.InsertTransactionsRecord(accountnumber,"DEPOSIT",payout_amount,0,0,description,payout_amount+accountbalance);
+             }
 
         }
 
-        System.out.println("Enter Your New Password");
-        int newpass=input.nextInt();
-
-        switch (whichpass) {
-
-            case 1:
-                Query.UpdateRecords(Accountnumber, "RAMZEAVVAL", Integer.toString(newpass));
-                break;
-
-            case 2:
-                Query.UpdateRecords(Accountnumber, "RAMZEDOVOM", Integer.toString(newpass));
-                break;
-        }
-        System.out.println("Your Password Changed Succesfully.");
-        return true ;
     }
 
 }

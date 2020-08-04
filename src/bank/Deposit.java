@@ -13,6 +13,8 @@ public class Deposit extends TRANSACTION {
 		this.setAccountnumber(ACCOUNTNUMBER);
 		this.setAmount(AMOUNT);
 		this.setAccountBalance(AccountBalance);
+		this.setReceiptDate();
+		this.setReceiptTime();
 
 	}
 

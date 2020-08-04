@@ -5,13 +5,15 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class Transfer extends TRANSACTION {
-	private int Destination=0;
-	public Transfer(int accountnumber,int amount,int Destination,int Accountbalance,String Description) {
+	private int Destination;
+	public Transfer(int accountnumber,int amount,int Destination,int Accountbalance) {
 		this.setAccountnumber(accountnumber);
 		this.setAmount(amount);
 		this.setAccountBalance(Accountbalance);
-		this.setDESCRIPTION(Description);
 		this.Destination=Destination;
+		this.setDESCRIPTION("Transferred Succesfully.");
+		this.setReceiptTime();
+		this.setReceiptDate();
 	}
 
 	private int getDestination(){
@@ -31,7 +33,8 @@ public class Transfer extends TRANSACTION {
 
 	@Override
 	public String toString(){
-		return String.format("Transfer Receipt\nAccountnumber: %d\nAmount: %d\nDestination: %d\nAccount Balance: %d\nDate: %s\nTime: %s\nDescription: %s\n",this.getAccountnumber(),this.getAMOUNT(),this.getDestination(),this.getAccountBalance(),this.getReceiptDate(),this.getReceiptTime());
+		return String.format("Transfer Receipt\nAccountnumber: %d\nAmount: %d\nDestination: %d\nAccount Balance: %d\nDate: %s\nTime: %s\nDescription: %s\n",this.getAccountnumber(),this.getAMOUNT(),this.getDestination(),this.getAccountBalance(),this.getReceiptDate(),this.getReceiptTime(),this.getDESCRIPTION());
 	}
+
 
 }

@@ -22,19 +22,32 @@ public class test {
     public static void main(String[] args) throws SQLException, ServiceNotFoundException {
 
   //Operations.Transfer(2000,1234,5006,145000);
-        //CheckingAccount account = new CheckingAccount.Checkingbuilder().setFirstname("Amin").setLastname("Ahmadpour").setPhonenumber(930023195).setBirthdate(1380,02,23).setNationalID(1810607418).setAccountnumber().setRamzeAvval().setRamzeDovom().setAccountype().setAccountbalance(520000).setRegistrationdate().getAccount();
-       // Savingaccount account1 = new Savingaccount.Savingaccountbuilder().setFirstname("Amin").setLastname("Ahmadpour").setPhonenumber(930023195).setBirthdate(1380,02,23).setNationalID(1810607418).setAccountnumber().setRamzeAvval().setRamzeDovom().setAccountype().setAccountbalance(520000).setRegistrationdate().setTimeperiod(5).setInterestrate(18).getAccount();
+
+
+        // Savingaccount account1 = new Savingaccount.Savingaccountbuilder().setFirstname("Amin").setLastname("Ahmadpour").setPhonenumber(930023195).setBirthdate(1380,02,23).setNationalID(1810607418).setAccountnumber().setRamzeAvval().setRamzeDovom().setAccountype().setAccountbalance(520000).setRegistrationdate().setTimeperiod(5).setInterestrate(18).getAccount();
        // account1.setPayoutamount();
         //out.println(account);
        // Query.InsertCustomersRecords(account);
         //Operations.Transfer(  714634,5487,3000,125000);
-        Operations.Changepassword(2000);
+        //Operations.Changepassword(2000);
+        //Query.Authentication(1000,0);
+        //LocalDate p = Query.ShowInformation(3000).getDate("REGISTERDATE").toLocalDate();
 
+        //System.out.println(p.getDayOfMonth());
+        //Operations.Interestpayout();
+        //Query.UpdateRecords(1000,"FIRSTNAME","Reza");
+
+        //out.println(PersianDate.now().getDayOfMonth());
         //out.println(RandomStringUtils.randomNumeric(6));
         //out.println(Query.Authentication(1000,1200));
         //System.out.println(Query.ShowInformation(1000).getString("FIRSTNAME"));
         //out.println( String.format(ex,"Amin"));
 
-    }
+        //Operations.Transfer(316200,660342,75000);
+       //Operations.Deposit(316200,154000);
 
-}
+
+
+        }
+
+    }
