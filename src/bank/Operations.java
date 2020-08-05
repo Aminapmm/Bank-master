@@ -5,6 +5,8 @@ import bank.time.PersianDate;
 import javax.management.ServiceNotFoundException;
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 
@@ -75,22 +77,23 @@ public class Operations {
         //TODO:Check this and test it.
 
 
-           // boolean auth = Query.Authentication(accountnumber, ramzeAvval);
 
-            Withdraw w;
-
-            int Accountbalance = Query.ShowInformation(accountnumber).getInt("Accountbalance");
+                    int Accountbalance = Query.ShowInformation(accountnumber).getInt("Accountbalance");
 
             if(Accountbalance>=amount) {
 
-                    Query.UpdateRecords(accountnumber, "ACCOUNTBALANCE", Integer.toString(Accountbalance - amount));
-
                     int AccountBalance=Accountbalance-amount;
+
+                    Query.UpdateRecords(accountnumber, "ACCOUNTBALANCE", Integer.toString(Accountbalance ));
+
 
                     String description=String.format("%d TOMANS Withdrawn Successfully From this Account.",amount);
                     Query.InsertTransactionsRecord(accountnumber,"Withdraw",amount,0,0,description,AccountBalance);
 
-                    w = new Withdraw(accountnumber,amount,AccountBalance);
+                    Withdraw w = new Withdraw(accountnumber,amount,AccountBalance);
+                    w.setReceiptDate();
+                    w.setReceiptTime();
+                    w.setDESCRIPTION("Succesfull");
 
                     System.out.println(w);
             }
@@ -101,11 +104,6 @@ public class Operations {
     }
 
     public static void Deposit(int Accountnumber,int Amount) throws SQLException,ServiceNotFoundException {
-
-        System.out.println("Enter your Password:");
-        int Ramzeavval = input.nextInt();
-        //boolean auth =  Query.Authentication(Accountnumber,Ramzeavval);
-
 
                         int Accountbalance = Query.ShowInformation(Accountnumber).getInt("Accountbalance");
                         Accountbalance += Amount;
@@ -197,7 +195,7 @@ public class Operations {
              int accountnumber = rs.getInt("ACCOUNTNUMBER");
              int payout_amount = rs.getInt("MONTHLYPAYOUT");
              int accountbalance = rs.getInt("ACCOUNTBALANCE");
-             String description = String.format("%d0 RIALS DEPOSITED TO YOUR ACCOUNT FOR  MONTHLY INTEREST PAYOUT",payout_amount);
+             String description = String.format("%d TOMANS DEPOSITED TO YOUR ACCOUNT FOR  MONTHLY INTEREST PAYOUT",payout_amount);
 
             if(day_of_month==Registerday){
                  Query.UpdateRecords(accountnumber,"accountbalance",Integer.toString(payout_amount+accountbalance));
@@ -206,6 +204,13 @@ public class Operations {
 
         }
 
+    }
+
+    public static void Checkaccountbalance(int Accountnumber) throws SQLException {
+
+        int accountbalance = Query.ShowInformation(Accountnumber).getInt("Accountbalance");
+        DateTimeFormatter std=DateTimeFormatter.ofPattern("HH:mm:ss");
+        System.out.printf("Accountnumber: %d\nAccount Balance: %d\nDate: %s\nTime: %s\n",Accountnumber,accountbalance,PersianDate.now(), LocalTime.now().format(std));
     }
 
 }

@@ -29,12 +29,35 @@ public class Query{
     static final String DB_PASSWORD = "13801380";
     static Scanner input = new Scanner(in);
 
+    public static boolean OperatorAuthentication(String username, int password) throws SQLException {
+
+        Connection conn = DriverManager.getConnection(DB_URL,DB_USERNAME,DB_PASSWORD);
+        String query = "SELECT * FROM OPERATORS WHERE USERNAME =? AND PASSWORD = ? ";
+        PreparedStatement pstmt = conn.prepareStatement(query);
+        pstmt.setString(1,username);
+        pstmt.setInt(2,password);
+        ResultSet rs = pstmt.executeQuery();
+        rs.last();
+        boolean status = (rs.getRow()==1)?true:false;
+        return status;
+    }
+
+
+
+
+
+
+
+
+
+
 /***
  *
  *THIS METHOD IS FOT AUTHENTICATING THE BEFORE DOING WORKS LIKE(WITHDRAW,DEPOSIT,CHANGING THE PASSWORDS,...)
  * It'll take  accountnumber & Ramze-avval and  check it with the database then it will  return true/false.
  *
 ***/
+
     public static boolean Authentication(int accountnumber,int ramzeavval)throws SQLException{
         boolean access=false;
 
@@ -42,7 +65,7 @@ public class Query{
 
             String ACCOUNTTYPE = Query.ShowInformation(accountnumber).getString("ACCOUNTTYPE")+"ACCOUNTS";
 
-            String query = String.format("SELECT * FROM %s WHERE accountnumber=?",ACCOUNTTYPE);
+            String query = String.format("SELECT RAMZEAVVAL FROM %s WHERE accountnumber=?",ACCOUNTTYPE);
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setInt(1,accountnumber);
             ResultSet rs = pstmt.executeQuery();
@@ -376,7 +399,7 @@ public class Query{
 
                 pstmt.setInt(8,AccountBalance);
 
-                status= (pstmt.executeUpdate()==1);
+                status= (pstmt.executeUpdate()==1)?true:false;
 
                 return  status;
             }

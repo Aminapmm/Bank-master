@@ -25,7 +25,7 @@ public class Withdraw extends TRANSACTION {
 
 	@Override
 	public String toString(){
-		return String.format("Withdraw Receipt\nAccountnumber: %d\nAccountBalance: %d\nDate: %s\nTime: %s\nDescription: %s\n",this.getAccountnumber(),this.getAccountBalance(),this.getReceiptDate(),this.getReceiptTime(),this.getAMOUNT());
+		return String.format("Withdraw Receipt=================\nAccountnumber: %d\nAccountBalance: %d\nDate: %s\nTime: %s\nDescription: %s\n",this.getAccountnumber(),this.getAccountBalance(),this.getReceiptDate(),this.getReceiptTime(),this.getAMOUNT());
 	}
 
 }
