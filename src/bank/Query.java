@@ -13,13 +13,13 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 
 import static java.lang.System.*;
 
 //TODO:WHEN INSERTING RECORDS IN ACCOUNT TABLES CHECK FOR EXISTANCE OF THE SAME RECORD...AND THEN TAKE THE ACTION
-//TODO:CREATE A STATUS COLUMN FOR ACCOUNTS AND SHOW STATUS(CLOSED,OPEN,TEMPRORARILY CLOSED)
 
 public class Query{
 
@@ -41,15 +41,6 @@ public class Query{
         boolean status = (rs.getRow()==1)?true:false;
         return status;
     }
-
-
-
-
-
-
-
-
-
 
 /***
  *
@@ -174,6 +165,7 @@ public class Query{
         }
 
     /***
+     *
      * This Method Used to Update Records in Account Tables...!
      * More Specifically It's Use for Updating Information (Personal or account info like passwords and Stuff Like that.)
      * The Output is True/False
@@ -181,7 +173,6 @@ public class Query{
      * @param accountnumber
      * @param field
      * @param data
-
 
      */
     public static boolean UpdateRecords(int accountnumber,String field,String data) throws SQLException, ServiceNotFoundException {
@@ -197,6 +188,10 @@ public class Query{
         rs.next();
         String type = rs.getString("ACCOUNTTYPE").toUpperCase()+"ACCOUNTS";
         field = field.toUpperCase();
+
+        if (field=="NATIONALID"||field=="ACCOUNTTYPE"||field=="ACCOUNTNUMBER"){
+            throw new InputMismatchException("Sorry ,this Field is Unchangeable.");
+        }
 
         switch (field){
 
@@ -362,7 +357,6 @@ public class Query{
         pstmt.setInt(9,account.getTimeperiod());
         pstmt.setString(10,account.getStatus());
 
-        //pstmt.executeUpdate();
 
         status=(pstmt.executeUpdate()==1?true:false);
 

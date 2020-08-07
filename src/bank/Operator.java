@@ -68,10 +68,10 @@ public class Operator {
 
                 accountbalance = input.nextInt();
 
+
         switch (accountype) {
 
             case "SAVING":
-
 
             System.out.println("Enter Your Interest RATE:");
 

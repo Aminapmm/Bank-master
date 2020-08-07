@@ -33,7 +33,7 @@ public class Transfer extends TRANSACTION {
 
 	@Override
 	public String toString(){
-		return String.format("Transfer Receipt\nAccountnumber: %d\nAmount: %d\nDestination: %d\nAccount Balance: %d\nDate: %s\nTime: %s\nDescription: %s\n",this.getAccountnumber(),this.getAMOUNT(),this.getDestination(),this.getAccountBalance(),this.getReceiptDate(),this.getReceiptTime(),this.getDESCRIPTION());
+		return String.format("Transfer Receipt\nAccountnumber: %d\nAmount: %d\nTo account: %d\nAccount Balance: %d\nDate: %s\nTime: %s\nDescription: %s\n",this.getAccountnumber(),this.getAMOUNT(),this.getDestination(),this.getAccountBalance(),this.getReceiptDate(),this.getReceiptTime(),this.getDESCRIPTION());
 	}
 
 

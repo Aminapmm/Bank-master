@@ -17,12 +17,12 @@ import static java.lang.System.out;
 
 public class test {
 
-
-
     public static void main(String[] args) throws SQLException, ServiceNotFoundException {
 
-  //Operations.Transfer(2000,1234,5006,145000);
-        Query.OperatorAuthentication("Amin",13801380);
+        //int accountnumber = Integer.parseInt(String.format("%06d",Integer.parseInt(RandomStringUtils.randomNumeric(4))));
+        Integer accountnumber = Integer.parseInt(String.format("%06d",152));
+        out.println(accountnumber);
+        //Operations.Transfer(2000,1234,5006,145000);
        // Query.ShowTransactionrecords(316200,10);
         // Savingaccount account1 = new Savingaccount.Savingaccountbuilder().setFirstname("Amin").setLastname("Ahmadpour").setPhonenumber(930023195).setBirthdate(1380,02,23).setNationalID(1810607418).setAccountnumber().setRamzeAvval().setRamzeDovom().setAccountype().setAccountbalance(520000).setRegistrationdate().setTimeperiod(5).setInterestrate(18).getAccount();
        // account1.setPayoutamount();
