@@ -8,13 +8,11 @@ import java.lang.invoke.SwitchPoint;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.*;
+import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 
 import static java.lang.System.*;
@@ -189,10 +187,6 @@ public class Query{
         String type = rs.getString("ACCOUNTTYPE").toUpperCase()+"ACCOUNTS";
         field = field.toUpperCase();
 
-        if (field=="NATIONALID"||field=="ACCOUNTTYPE"||field=="ACCOUNTNUMBER"){
-            throw new InputMismatchException("Sorry ,this Field is Unchangeable.");
-        }
-
         switch (field){
 
             case "RAMZEAVVAL":
@@ -296,18 +290,18 @@ public class Query{
 
                 pstmt.setString(1,account.getFirstname());
                 pstmt.setString(2,account.getLastname());
-                pstmt.setLong(3,account.getNationalID());
+                pstmt.setString(3,account.getNationalID());
                 pstmt.setInt(4,account.getAccountnumber());
                 pstmt.setString(5,account.getAccountype());
                 pstmt.setDate(6,Date.valueOf(account.getBirthdate().toString()));
-                pstmt.setLong(7,account.getPhonenumber());
+                pstmt.setString(7,account.getPhonenumber());
 
                 pstmt.executeUpdate();
 
                 query = "INSERT INTO Checkingaccounts (NATIONALID,ACCOUNTNUMBER,RAMZEAVVAL,RAMZEDOVOM,ACCOUNTBALANCE,REGISTERDATE,STATUS) VALUES(?,?,?,?,?,?,?)";
                 pstmt = conn.prepareStatement(query);
 
-                pstmt.setLong(1,account.getNationalID());
+                pstmt.setString(1,account.getNationalID());
                 pstmt.setInt(2,account.getAccountnumber());
                 pstmt.setInt(3,account.getRamzeAvval());
                 pstmt.setInt(4,account.getRamzeDovom());
@@ -334,9 +328,9 @@ public class Query{
 
         pstmt.setString(1,account.getFirstname());
         pstmt.setString(2,account.getLastname());
-        pstmt.setLong(3,account.getNationalID());
+        pstmt.setString(3,account.getNationalID());
         pstmt.setDate(4,Date.valueOf(account.getBirthdate().toString()));
-        pstmt.setLong(5,account.getPhonenumber());
+        pstmt.setString(5,account.getPhonenumber());
         pstmt.setInt(6,account.getAccountnumber());
         pstmt.setString(7,account.getAccountype());
 
@@ -346,7 +340,7 @@ public class Query{
         String query1 = "INSERT INTO SAVINGACCOUNTS (NATIONALID,ACCOUNTNUMBER,RAMZEAVVAL,RAMZEDOVOM,ACCOUNTBALANCE,REGISTERDATE,MONTHLYPAYOUT,INTERESTRATE,HOLDDURATION,STATUS) VALUES (?,?,?,?,?,?,?,?,?,?)";
         pstmt = conn.prepareStatement(query1);
 
-        pstmt.setLong(1,account.getNationalID());
+        pstmt.setString(1,account.getNationalID());
         pstmt.setInt(2,account.getAccountnumber());
         pstmt.setInt(3,account.getRamzeAvval());
         pstmt.setInt(4,account.getRamzeDovom());
@@ -398,7 +392,7 @@ public class Query{
                 return  status;
             }
 
-        public static ResultSet ShowTransactionrecords(int Accountnumber,int number)throws SQLException{
+        public static void ShowTransactionrecords(int Accountnumber,int number)throws SQLException{
 
         //TODO:It's Better to Override toString Method,And Print the Records!
 
@@ -414,10 +408,9 @@ public class Query{
                 rs.last();
                 int Countrows = rs.getRow();
                 rs.beforeFirst();
-                if(number<Countrows){
-                    while (rs.next()){
-                        rs.next();
-                        String receipttype=rs.getString("TYPE").toUpperCase();
+
+                    while (rs.next()&&rs.getRow()<=Countrows){
+                        String receipttype=rs.getString("RECEIPTTYPE").toUpperCase();
                         switch(receipttype){
                             case "DEPOSIT":
                                 Deposit deposit = new Deposit(rs.getInt("ACCOUNTNUMBER"),rs.getInt("AMOUNT"),rs.getInt("ACCOUNTBALANCE"));
@@ -432,17 +425,19 @@ public class Query{
                                 out.println(withdraw);
                                 break;
                             case "TRANSFER":
-                                Transfer transfer = new Transfer(rs.getInt("ACCOUNTNUMBER"),rs.getInt("AMOUNT"),rs.getInt("DESTINATION"),rs.getInt("ACCOUNTBALANCE"));
+                                Transfer transfer = new Transfer(rs.getInt("ACCOUNTNUMBER"),rs.getInt("AMOUNT"),rs.getInt("SOURCE"),rs.getInt("DESTINATION"),rs.getInt("ACCOUNTBALANCE"));
                                 transfer.setDESCRIPTION(rs.getString("DESCRIPTION"));
                                 out.println(transfer);
                                 break;
                         }
+                        out.println("===============================================");
+
                     }
                 }
-                return rs;
-
-            }
 
 
+    public static void main(String[] args) throws SQLException {
+        ShowTransactionrecords(379823,10);
+    }
 
 }

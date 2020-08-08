@@ -2,20 +2,17 @@ package bank;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import bank.time.*;
-import javax.management.ServiceNotFoundException;
-import java.sql.*;
-import java.time.LocalDate;
-import java.util.ArrayList;
+
 import java.util.Scanner;
 
 
-public abstract class BankAccount {
+ abstract class BankAccount {
 
     private String Firstname;
     private String Lastname;
     private String Fathername;
-    private long NationalID;
-    private long Phonenumber;
+    private String NationalID;
+    private String Phonenumber;
     private int Accountnumber;
     private PersianDate Birthdate;
     private String Accountype;
@@ -24,6 +21,7 @@ public abstract class BankAccount {
     private int Accountbalance;
     private PersianDate RegistrationDate;
     private String Status;
+    private final int MIN_ACCOUNTBALANCE=50000;
 
     static Scanner input = new Scanner(System.in);
 
@@ -53,7 +51,9 @@ public abstract class BankAccount {
 
             this.Accountnumber = b.Accountnumber;
 
-            this.Accountbalance = b.Accountbalance;
+            if(b.Accountbalance>=MIN_ACCOUNTBALANCE) {
+                this.Accountbalance = b.Accountbalance;
+            }
 
             this.RamzeAvval = b.RamzeAvval;
 
@@ -67,67 +67,67 @@ public abstract class BankAccount {
     }
 
 
-    public String getFirstname () {
+     String getFirstname () {
         return this.Firstname;
     }
 
 
 
 
-    public String getLastname () {
+     String getLastname () {
         return this.Lastname;
     }
 
 
 
-    public String getFathername () {
+     String getFathername () {
         return this.Fathername;
     }
 
 
 
-    public long getNationalID () {
+    String getNationalID () {
         return this.NationalID;
     }
 
 
 
-    public long getPhonenumber () {
+     String getPhonenumber () {
         return this.Phonenumber;
     }
 
 
-    public PersianDate getBirthdate () {
+     PersianDate getBirthdate () {
         return this.Birthdate;
     }
 
-    public int getAccountnumber() {
+     int getAccountnumber() {
         return this.Accountnumber;
     }
 
-    public String getAccountype () {
+     String getAccountype () {
         return this.Accountype;
     }
 
 
 
-    public int getAccountbalance () {
+     int getAccountbalance () {
         return this.Accountbalance;
     }
 
 
 
-    public int getRamzeAvval () {
+     int getRamzeAvval () {
         return this.RamzeAvval;
     }
 
-    public String getStatus(){return this.Status;}
+     String getStatus(){return this.Status;}
 
-    public int getRamzeDovom () {
+     int getRamzeDovom () {
         return this.RamzeDovom;
     }
 
-    public PersianDate getRegistrationDate() {
+     PersianDate getRegistrationDate() {
         return RegistrationDate;
     }
 
@@ -137,8 +137,8 @@ public abstract class BankAccount {
         private String Firstname;
         private String Lastname;
         private String Fathername;
-        private long NationalID;
-        private long Phonenumber;
+        private String NationalID;
+        private String Phonenumber;
         private int Accountnumber;
         private PersianDate Birthdate;
         private PersianDate Registrationdate;
@@ -149,66 +149,66 @@ public abstract class BankAccount {
         private String Status;
 
 
-        public builder setStatus(){
+         builder setStatus(){
             this.Status="Open";
             return this;
         }
-        public builder setFirstname(String firstname) {
+         builder setFirstname(String firstname) {
             Firstname = firstname;
             return this;
         }
 
-        public builder setLastname(String lastname) {
+         builder setLastname(String lastname) {
             Lastname = lastname;
             return this;
         }
 
-        public builder setFathername(String fathername) {
+         builder setFathername(String fathername) {
             Fathername = fathername;
             return this;
         }
 
-        public builder setNationalID(long nationalID) {
+         builder setNationalID(String nationalID) {
             NationalID = nationalID;
             return this;
         }
 
-        public builder setPhonenumber(long phonenumber) {
+         builder setPhonenumber(String phonenumber) {
             Phonenumber = phonenumber;
             return this;
         }
 
-        public builder setAccountnumber(int accountnumber) {
+         builder setAccountnumber(int accountnumber) {
             Accountnumber = accountnumber;
             return this;
         }
 
-        public builder setBirthdate(PersianDate birthdate) {
+         builder setBirthdate(PersianDate birthdate) {
             Birthdate = birthdate;
             return this;
         }
 
-        public builder setRegistrationdate(PersianDate registrationdate) {
+         builder setRegistrationdate(PersianDate registrationdate) {
             Registrationdate = registrationdate;
             return this;
         }
 
-        public builder setAccountype(String accountype) {
+         builder setAccountype(String accountype) {
             Accountype = accountype;
             return this;
         }
 
-        public builder setRamzeAvval(int ramzeAvval) {
+         builder setRamzeAvval(int ramzeAvval) {
             RamzeAvval = ramzeAvval;
             return this;
         }
 
-        public builder setRamzeDovom(int ramzeDovom) {
+         builder setRamzeDovom(int ramzeDovom) {
             RamzeDovom = ramzeDovom;
             return this;
         }
 
-        public builder setAccountbalance(int accountbalance) {
+         builder setAccountbalance(int accountbalance) {
             Accountbalance = accountbalance;
             return this;
         }
@@ -236,25 +236,25 @@ public abstract class BankAccount {
        }
 
 
-        public int getTimeperiod(){
+         int getTimeperiod(){
            return this.Timeperiod;
        }
 
-        public int getMONTHLY_PAYOUT_AMOUNT() {
+         int getMONTHLY_PAYOUT_AMOUNT() {
             return this.MONTHLY_PAYOUT_AMOUNT;
         }
 
-        public int getInterestrate(){
+         int getInterestrate(){
            return this.Interestrate;
         }
 
-         public void setPayoutamount(){
+         void setPayoutamount(){
              this.MONTHLY_PAYOUT_AMOUNT = (this.Interestrate*super.getAccountbalance()*this.Timeperiod/100)/12;
          }
 
          @Override
          public String toString(){
-           return String.format("Firstname: %s\nLastname: %s\nNationalID: %d\nBirthdate: %s\nPhonenumber: %d\nAccountnumber: %d\nAccountbalance: %d\nMonthlyPayout: %d\nInterestrate: %d\nHoldDuration: %d\nRamze-Avval: %d\nRamze-Dovom: %d\nRegisterdate: %s\n",this.getFirstname(),this.getLastname(),this.getNationalID(),this.getBirthdate(),this.getPhonenumber(),this.getAccountnumber(),this.getAccountbalance(),this.getMONTHLY_PAYOUT_AMOUNT(),this.getInterestrate(),this.getTimeperiod(),this.getRamzeAvval(),this.getRamzeAvval(),this.getRegistrationDate());
+           return String.format("Firstname: %s\nLastname: %s\nNationalID: %s\nBirthdate: %s\nPhonenumber: %s\nAccountnumber: %d\nAccountbalance: %d\nMonthlyPayout: %d\nInterestrate: %d\nHoldDuration: %d\nRamze-Avval: %d\nRamze-Dovom: %d\nRegisterdate: %s\n",this.getFirstname(),this.getLastname(),this.getNationalID(),this.getBirthdate(),this.getPhonenumber(),this.getAccountnumber(),this.getAccountbalance(),this.getMONTHLY_PAYOUT_AMOUNT(),this.getInterestrate(),this.getTimeperiod(),this.getRamzeAvval(),this.getRamzeAvval(),this.getRegistrationDate());
          }
 
         static class Savingaccountbuilder extends BankAccount.builder {
@@ -264,12 +264,12 @@ public abstract class BankAccount {
            private int Interestrate;
 
 
-            public Savingaccountbuilder setpayoutamount(int amount){
+             Savingaccountbuilder setpayoutamount(int amount){
                 this.MONTHLY_PAYOUT_AMOUNT=amount;
                 return this;
             }
 
-            public Savingaccountbuilder setTimeperiod(int timeperiod){
+             Savingaccountbuilder setTimeperiod(int timeperiod){
 
                this.Timeperiod = timeperiod;
                return this;
@@ -298,50 +298,50 @@ public abstract class BankAccount {
             }
 
             @Override
-            public Savingaccountbuilder setNationalID(long nationalID) {
+            public Savingaccountbuilder setNationalID(String nationalID) {
                  super.setNationalID(nationalID);
                  return this;
             }
 
             @Override
-            public Savingaccountbuilder setPhonenumber(long phonenumber) {
+            public Savingaccountbuilder setPhonenumber(String phonenumber) {
                 super.setPhonenumber(phonenumber);
                 return this;
             }
 
 
-            public Savingaccountbuilder setAccountnumber() {
+             Savingaccountbuilder setAccountnumber() {
                 int accountnumber = Integer.parseInt(RandomStringUtils.randomNumeric(6));
                 super.setAccountnumber(accountnumber);
                 return this;
             }
 
-            public Savingaccountbuilder setBirthdate(int yy,int mm,int dd) {
+             Savingaccountbuilder setBirthdate(int yy,int mm,int dd) {
                  PersianDate birthdate = PersianDate.of(yy, mm, dd);
                  super.setBirthdate(birthdate);
                  return this;
             }
 
-            public Savingaccountbuilder setRegistrationdate() {
+             Savingaccountbuilder setRegistrationdate() {
                 PersianDate registrationdate = PersianDate.now();
                 super.setRegistrationdate(registrationdate);
                 return this;
             }
 
 
-            public Savingaccountbuilder setAccountype() {
+             Savingaccountbuilder setAccountype() {
                 super.setAccountype("SAVING");
                 return this;
             }
 
-            public Savingaccountbuilder setRamzeAvval() {
+             Savingaccountbuilder setRamzeAvval() {
 
                  int ramzeAvval = Integer.parseInt(RandomStringUtils.randomNumeric(4));
                  super.setRamzeAvval(ramzeAvval);
                  return this;
             }
 
-            public Savingaccountbuilder setRamzeDovom() {
+             Savingaccountbuilder setRamzeDovom() {
 
                  int ramzeDovom = Integer.parseInt(RandomStringUtils.randomNumeric(4));
                  super.setRamzeDovom(ramzeDovom);
@@ -355,7 +355,7 @@ public abstract class BankAccount {
             }
 
 
-            public Savingaccountbuilder setInterestrate(int interestrate) {
+             Savingaccountbuilder setInterestrate(int interestrate) {
                 this.Interestrate=interestrate;
                  return this;
             }
@@ -385,7 +385,7 @@ public abstract class BankAccount {
 
         @Override
         public String toString(){
-            return String.format("Firstname: %s\nLastname: %s\nNationalID: %d\nBirthdate: %s\nAccountnumber: %d\nRamze-Avval: %d\nRamze-Dovom: %d\nRegisterdate: %s\nAccountbalance: %d \nPhonenumber: %d\n ",this.getFirstname(),this.getLastname(),this.getNationalID(),this.getBirthdate(),this.getAccountnumber(),this.getRamzeAvval(),this.getRamzeDovom(),this.getRegistrationDate(),this.getAccountbalance(),this.getPhonenumber());
+            return String.format("Firstname: %s\nLastname: %s\nNationalID: %s\nBirthdate: %s\nAccountnumber: %d\nRamze-Avval: %d\nRamze-Dovom: %d\nRegisterdate: %s\nAccountbalance: %d \nPhonenumber: %s\n ",this.getFirstname(),this.getLastname(),this.getNationalID(),this.getBirthdate(),this.getAccountnumber(),this.getRamzeAvval(),this.getRamzeDovom(),this.getRegistrationDate(),this.getAccountbalance(),this.getPhonenumber());
         }
 
         static class Checkingbuilder extends builder{
@@ -410,18 +410,18 @@ public abstract class BankAccount {
             }
 
             @Override
-            public Checkingbuilder setNationalID(long nationalID) {
+            public Checkingbuilder setNationalID(String nationalID) {
                 super.setNationalID(nationalID);
                 return this;
             }
 
             @Override
-            public Checkingbuilder setPhonenumber(long phonenumber) {
+            public Checkingbuilder setPhonenumber(String phonenumber) {
                  super.setPhonenumber(phonenumber);
                  return this;
             }
 
-            public Checkingbuilder setAccountnumber() {
+             Checkingbuilder setAccountnumber() {
 
                 int accountnumber = Integer.parseInt(RandomStringUtils.randomNumeric(6));
                 super.setAccountnumber(accountnumber);
@@ -429,7 +429,7 @@ public abstract class BankAccount {
             }
 
 
-            public Checkingbuilder setBirthdate(int yy,int mm,int dd) {
+             Checkingbuilder setBirthdate(int yy,int mm,int dd) {
                 PersianDate birthdate = PersianDate.of(yy,mm,dd);
                 super.setBirthdate(birthdate);
                 return this;
@@ -441,7 +441,7 @@ public abstract class BankAccount {
             }
 
 
-            public Checkingbuilder setRegistrationdate() {
+            Checkingbuilder setRegistrationdate() {
 
                  PersianDate registrationdate = PersianDate.now();
                  super.setRegistrationdate(registrationdate);
@@ -454,14 +454,14 @@ public abstract class BankAccount {
             }
 
 
-            public Checkingbuilder setRamzeAvval() {
+             Checkingbuilder setRamzeAvval() {
 
                 int ramzeAvval = Integer.parseInt(RandomStringUtils.randomNumeric(4));
                 super.setRamzeAvval(ramzeAvval);
                 return this;
             }
 
-            public Checkingbuilder setRamzeDovom() {
+             Checkingbuilder setRamzeDovom() {
 
                 int ramzeDovom = Integer.parseInt(RandomStringUtils.randomNumeric(4));
                 super.setRamzeDovom(ramzeDovom);

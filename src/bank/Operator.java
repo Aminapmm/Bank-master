@@ -23,19 +23,19 @@ public class Operator {
 
     public void buildaccount() throws SQLException {
 
-        String firstname ;
-        String lastname ;
-        String fathername ;
-        long phonenumber ;
-        int accountnumber ;
-        long nationalid ;
-        PersianDate birthdate;
-        // PersianDate registrationdate;
-        String accountype;
-        // int ramzeavval;
-        // int ramzedovom;
-        int accountbalance;
-        int interestrate;
+                String firstname ;
+                String lastname ;
+                String fathername ;
+                String phonenumber ;
+                int accountnumber ;
+                String nationalid ;
+                PersianDate birthdate;
+                // PersianDate registrationdate;
+                String accountype;
+                // int ramzeavval;
+                // int ramzedovom;
+                int accountbalance;
+                int interestrate;
 
 
                 Scanner input = new Scanner(System.in);
@@ -43,12 +43,14 @@ public class Operator {
                 firstname = input.next();
                 System.out.println("Enter Your Lastname:");
                 lastname = input.next();
-                System.out.println("Enter you Fathername:");
-                fathername = input.next();
+
                 System.out.println("Enter Your National ID:");
-                nationalid = input.nextLong();
+                nationalid = input.next();
+                Exceptions.nationalidcheck(nationalid);
+
                 System.out.println("Enter Your Phonenumber:");
-                phonenumber = input.nextLong();
+                phonenumber = input.next();
+                Exceptions.phonenumbercheck(phonenumber);
 
                 System.out.println("Enter Your Birthdate year:");
                 int yy =input.nextInt();
@@ -128,6 +130,6 @@ public class Operator {
     public static void main(String[] args) throws SQLException {
         Operator op = Operator.get_instance();
         op.buildaccount();
-
     }
+
 }
