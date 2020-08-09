@@ -150,13 +150,10 @@ public class Operations {
             }
 
 
-    public static void Changestate(int accountnumber,int ramzeavval )throws SQLException,ServiceNotFoundException{
+    public static void Changestate(int accountnumber )throws SQLException,ServiceNotFoundException{
 
 
-        boolean access = Query.Authentication(accountnumber,ramzeavval);
-        if(access==true){
-
-            System.out.printf("What do you want to do with this Account?\n1)Open\n2)Close\n3)Temprorarily Block");
+            System.out.printf("What do you want to do with this Account?\n1)Open\n2)Close\n3)Suspend");
 
             int state = input.nextInt();
 
@@ -171,16 +168,11 @@ public class Operations {
                         break;
 
                     case 3:
-                        Query.UpdateRecords(accountnumber,"STATUS","BLOCKED");
+                        Query.UpdateRecords(accountnumber,"STATUS","Suspended");
                         break;
             }
         }
 
-        else {
-            System.out.println("Password is Incorrect.");
-        }
-
-    }
 
     public static void Interestpayout()throws ServiceNotFoundException,SQLException{
         Connection conn = DriverManager.getConnection(Query.DB_URL,Query.DB_USERNAME,Query.DB_PASSWORD);

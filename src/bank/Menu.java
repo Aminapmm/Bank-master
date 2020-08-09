@@ -24,8 +24,8 @@ interface Menu {
 
             boolean access = Query.OperatorAuthentication(username, password);
             if (access == true) {
-                System.out.println("Enter Your Accountnumber:");
-                int accountnumber = input.nextInt();
+
+                int accountnumber;
 
                 int Option;
 
@@ -36,17 +36,27 @@ interface Menu {
                             "2)Edit AccountInformation\n" +
                             "3)Show Last10 Transactions\n"
                             + "4)Change Passwords\n" + "5)Transfer\n" +
-                            "6)Withdraw\n" + "7)Deposit\n8)CheckAccountBalance\n");
+                            "6)Withdraw\n" + "7)Deposit\n8)CheckAccountBalance\n9)Change State");
+
+
 
                     Option = input.nextInt();
 
+                    if(Option==1){
+
+                        Operator op = Operator.get_instance();
+                        op.buildaccount();
+
+                    }
+
+                    System.out.println("Enter Your Accountnumber:");
+                    accountnumber = input.nextInt();
+
+                    Exceptions.accountexist(accountnumber);
+                    Exceptions.Checkstate(accountnumber);
+
                     switch (Option) {
 
-                        case 1:
-
-                            Operator op = Operator.get_instance();
-                            op.buildaccount();
-                            break;
 
                         case 2:
 
@@ -58,6 +68,7 @@ interface Menu {
                             break;
 
                         case 3:
+
 
                             Query.ShowTransactionrecords(accountnumber, 10);
                             break;
@@ -78,12 +89,14 @@ interface Menu {
 
                         case 6:
 
+
                             System.out.println("Enter Amount for Withdraw:");
                             int Withdraw_amount = input.nextInt();
                             Operations.Withdraw(accountnumber, Withdraw_amount);
                             break;
 
                         case 7:
+
 
                             System.out.println("Enter Amount for Deposit:");
                             int deposit_amount = input.nextInt();
@@ -92,7 +105,13 @@ interface Menu {
 
                         case 8:
 
+
                             Operations.Checkaccountbalance(accountnumber);
+                            break;
+
+                        case 9:
+
+                            Operations.Changestate(accountnumber);
                             break;
                     }
 

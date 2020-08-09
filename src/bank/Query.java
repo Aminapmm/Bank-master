@@ -401,7 +401,7 @@ public class Query{
 
 
                 String query = "SELECT * FROM TRANSACTIONS WHERE ACCOUNTNUMBER=? LIMIT ?";
-                PreparedStatement pstmt = conn.prepareStatement(query);
+                PreparedStatement pstmt = conn.prepareStatement(query,ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
                 pstmt.setInt(1,Accountnumber);
                 pstmt.setInt(2,number);
                 ResultSet rs = pstmt.executeQuery();
