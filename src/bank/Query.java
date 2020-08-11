@@ -1,19 +1,16 @@
 package bank;
 
 import bank.time.PersianDate;
-import com.mysql.cj.xdevapi.SqlDataResult;
 
 import javax.management.ServiceNotFoundException;
-import java.lang.invoke.SwitchPoint;
-import java.math.BigDecimal;
-import java.math.BigInteger;
+
 import java.sql.*;
 import java.sql.Date;
-import java.time.LocalDateTime;
+
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
+
 
 import static java.lang.System.*;
 

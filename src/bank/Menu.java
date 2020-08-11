@@ -31,13 +31,14 @@ interface Menu {
 
                 do {
 
+                    Operations.Interestpayout();
+
                     System.out.printf("0)Exit\n" +
                             "1)Create an Acoount\n" +
                             "2)Edit AccountInformation\n" +
                             "3)Show Last10 Transactions\n"
                             + "4)Change Passwords\n" + "5)Transfer\n" +
                             "6)Withdraw\n" + "7)Deposit\n8)CheckAccountBalance\n9)Change State");
-
 
 
                     Option = input.nextInt();
@@ -52,15 +53,20 @@ interface Menu {
                     System.out.println("Enter Your Accountnumber:");
                     accountnumber = input.nextInt();
 
-                    Exceptions.accountexist(accountnumber);
-                    Exceptions.Checkstate(accountnumber);
+
 
                     switch (Option) {
 
+                        case 1:
+
+
+                            break;
 
                         case 2:
+                            Exceptions.accountexist(accountnumber);
+                            Exceptions.Checkstate(accountnumber);
 
-                            System.out.println("Which Field You Want to change:");
+                            System.out.printf("Which Field You Want to change:\n1)Firstname\n2)Lastname\n3)Phonenumber\n");
                             String field = input.next();
                             System.out.println(String.format("Enter Your new %s :", field));
                             String data = input.next();
@@ -69,7 +75,8 @@ interface Menu {
 
                         case 3:
 
-
+                            Exceptions.accountexist(accountnumber);
+                            Exceptions.Checkstate(accountnumber);
                             Query.ShowTransactionrecords(accountnumber, 10);
                             break;
 
@@ -79,7 +86,8 @@ interface Menu {
                             break;
 
                         case 5:
-
+                            Exceptions.accountexist(accountnumber);
+                            Exceptions.Checkstate(accountnumber);
                             System.out.println("Enter Your Destination Accountnumber:");
                             int Dest = input.nextInt();
                             System.out.println("Enter The Amount for Transfer:");
@@ -88,7 +96,8 @@ interface Menu {
                             break;
 
                         case 6:
-
+                            Exceptions.accountexist(accountnumber);
+                            Exceptions.Checkstate(accountnumber);
 
                             System.out.println("Enter Amount for Withdraw:");
                             int Withdraw_amount = input.nextInt();
@@ -96,15 +105,13 @@ interface Menu {
                             break;
 
                         case 7:
-
-
+                            
                             System.out.println("Enter Amount for Deposit:");
                             int deposit_amount = input.nextInt();
                             Operations.Deposit(accountnumber, deposit_amount);
                             break;
 
                         case 8:
-
 
                             Operations.Checkaccountbalance(accountnumber);
                             break;
@@ -134,8 +141,10 @@ interface Menu {
          int option;
          System.out.println("Enter Your Accountnumber:");
          int accountnumber = input.nextInt();
+         Exceptions.accountexist(accountnumber);
          System.out.println("Enter Your Password:");
          int password = input.nextInt();
+         Exceptions.Checkstate(accountnumber);
 
          do {
              System.out.printf("0)Exit\n"+"1)Show Last10 Transactions\n"
@@ -234,15 +243,27 @@ interface Menu {
 
      public static void main(String[] args) throws ServiceNotFoundException, SQLException {
 
+         Scanner input = new Scanner(System.in);
 
-         Operatorsmenu menu1 = new Operatorsmenu();
-          menu1.MenuList();
+         System.out.printf("Which Menu Do you Want To Enter?\n1)Operators Menu\n2)Customers Menu\n3)OnlineBanking Menu");
+         int Option = input.nextInt();
+         switch (Option) {
+             case 1:
+                      Operatorsmenu menu1 = new Operatorsmenu();
+                      menu1.MenuList();
+                      break;
 
-        // CustomersMenu menu2 = new CustomersMenu();
-        // menu2.MenuList();
+             case 2:
+                     CustomersMenu menu2 = new CustomersMenu();
+                     menu2.MenuList();
+                     break;
 
-         //OnlineBanking menu3 = new OnlineBanking();
-         //menu3.MenuList();
+             case 3:
+
+                     OnlineBanking menu3 = new OnlineBanking();
+                     menu3.MenuList();
+                         break;
+         }
      }
 
  }

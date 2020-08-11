@@ -1,6 +1,5 @@
 package bank;
 
-import com.mysql.cj.xdevapi.SqlDataResult;
 
 import java.sql.*;
 import java.util.Scanner;
@@ -33,7 +32,9 @@ public class Exceptions {
     }
 
     public static void phonenumbercheck(String phonenumber) {
-        if (phonenumber.length() != 10) {
+        if (phonenumber.length() == 10 || phonenumber.length()==11) {
+        }
+        else {
             throw new Badphonenumber();
         }
 
@@ -67,7 +68,8 @@ public class Exceptions {
         pstmt.setInt(1,accountnumber);
         ResultSet rs = pstmt.executeQuery();
         rs.next();
-        if(rs.getString("STATUS")!="OPEN"){
+
+        if(!rs.getString("STATUS").equals("OPEN")){
             throw new CheckAccountState();
         }
     }

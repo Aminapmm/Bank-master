@@ -25,15 +25,11 @@ public class Operator {
 
                 String firstname ;
                 String lastname ;
-                String fathername ;
                 String phonenumber ;
                 int accountnumber ;
                 String nationalid ;
                 PersianDate birthdate;
-                // PersianDate registrationdate;
                 String accountype;
-                // int ramzeavval;
-                // int ramzedovom;
                 int accountbalance;
                 int interestrate;
 

@@ -48,7 +48,7 @@ public class Operations {
 
                             Query.UpdateRecords(accountnumber,"ACCOUNTBALANCE",Integer.toString(Accountbalance));
                             Query.InsertTransactionsRecord(accountnumber,"TRANSFER",amount,0,Destination,String.format("%d Tomans Has been Transfered from This Account.",amount),Accountbalance);
-                            Transfer receipt = new Transfer(accountnumber,Destination,amount,Accountbalance);
+                            Transfer receipt = new Transfer(accountnumber,amount,Destination,Accountbalance);
 
                             Accountbalance=Query.ShowInformation(Destination).getInt("accountbalance")+amount;
 
@@ -65,7 +65,7 @@ public class Operations {
                 }
 
 
-                else if(Query.ShowInformation(Destination).isFirst()==false){
+                else if(!Query.ShowInformation(Destination).isFirst()){
                     System.out.println("Destination Account nubmer not found in System try again.");
                 }
 
@@ -87,7 +87,7 @@ public class Operations {
                     Query.UpdateRecords(accountnumber, "ACCOUNTBALANCE", Integer.toString(Accountbalance ));
 
 
-                    String description=String.format("%d TOMANS Withdrawn Successfully From this Account.",amount);
+                    String description=String.format("%d Rials Withdrawn Successfully From this Account.",amount);
                     Query.InsertTransactionsRecord(accountnumber,"Withdraw",amount,0,0,description,AccountBalance);
 
                     Withdraw w = new Withdraw(accountnumber,amount,AccountBalance);
@@ -110,7 +110,7 @@ public class Operations {
                         System.out.println(Accountbalance);
                         boolean status = Query.UpdateRecords(Accountnumber,"ACCOUNTBALANCE",Integer.toString(Accountbalance));
                         if(status==true){
-                            String description = String.format("%d TOMANS HAS BEEN DEPOSITED TO THIS ACCOUNT SUCCESFULLY.",Amount);
+                            String description = String.format("%d Rials HAS BEEN DEPOSITED TO THIS ACCOUNT SUCCESFULLY.",Amount);
                             Query.InsertTransactionsRecord(Accountnumber,"Deposit",Amount,0,0,description,Accountbalance);
                             Deposit receipt = new Deposit(Accountnumber,Amount,Accountbalance);
                             receipt.setDESCRIPTION("DONE.");
@@ -187,7 +187,7 @@ public class Operations {
              int accountnumber = rs.getInt("ACCOUNTNUMBER");
              int payout_amount = rs.getInt("MONTHLYPAYOUT");
              int accountbalance = rs.getInt("ACCOUNTBALANCE");
-             String description = String.format("%d TOMANS DEPOSITED TO YOUR ACCOUNT FOR  MONTHLY INTEREST PAYOUT",payout_amount);
+             String description = String.format("%d Rials DEPOSITED TO YOUR ACCOUNT FOR  MONTHLY INTEREST PAYOUT",payout_amount);
 
             if(day_of_month==Registerday){
                  Query.UpdateRecords(accountnumber,"accountbalance",Integer.toString(payout_amount+accountbalance));
@@ -202,7 +202,7 @@ public class Operations {
 
         int accountbalance = Query.ShowInformation(Accountnumber).getInt("Accountbalance");
         DateTimeFormatter std=DateTimeFormatter.ofPattern("HH:mm:ss");
-        System.out.printf("Accountnumber: %d\nAccount Balance: %d\nDate: %s\nTime: %s\n",Accountnumber,accountbalance,PersianDate.now(), LocalTime.now().format(std));
+        System.out.printf("=================\nAccountnumber: %d\nAccount Balance: %d\nDate: %s\nTime: %s\n======================",Accountnumber,accountbalance,PersianDate.now(), LocalTime.now().format(std));
     }
 
 }

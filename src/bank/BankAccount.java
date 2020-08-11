@@ -254,7 +254,7 @@ import java.util.Scanner;
 
          @Override
          public String toString(){
-           return String.format("Firstname: %s\nLastname: %s\nNationalID: %s\nBirthdate: %s\nPhonenumber: %s\nAccountnumber: %d\nAccountbalance: %d\nMonthlyPayout: %d\nInterestrate: %d\nHoldDuration: %d\nRamze-Avval: %d\nRamze-Dovom: %d\nRegisterdate: %s\n",this.getFirstname(),this.getLastname(),this.getNationalID(),this.getBirthdate(),this.getPhonenumber(),this.getAccountnumber(),this.getAccountbalance(),this.getMONTHLY_PAYOUT_AMOUNT(),this.getInterestrate(),this.getTimeperiod(),this.getRamzeAvval(),this.getRamzeAvval(),this.getRegistrationDate());
+           return String.format("Firstname: %s\nLastname: %s\nNationalID: %s\nBirthdate: %s\nPhonenumber: %s\nAccountnumber: %d\nAccountbalance: %d\nMonthlyPayout: %d\nInterestrate: %d\nHoldDuration: %d\nRamze-Avval: %d\nRamze-Dovom: %d\nRegisterdate: %s\n",this.getFirstname(),this.getLastname(),this.getNationalID(),this.getBirthdate(),this.getPhonenumber(),this.getAccountnumber(),this.getAccountbalance(),this.getMONTHLY_PAYOUT_AMOUNT(),this.getInterestrate(),this.getTimeperiod(),this.getRamzeAvval(),this.getRamzeDovom(),this.getRegistrationDate());
          }
 
         static class Savingaccountbuilder extends BankAccount.builder {
