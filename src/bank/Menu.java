@@ -34,7 +34,7 @@ interface Menu {
                     Operations.Interestpayout();
 
                     System.out.printf("0)Exit\n" +
-                            "1)Create an Acoount\n" +
+                            "1)Create a CheckingAcoount\n"+"11)Create a Savingaccount\n" +
                             "2)Edit AccountInformation\n" +
                             "3)Show Last10 Transactions\n"
                             + "4)Change Passwords\n" + "5)Transfer\n" +
@@ -43,26 +43,31 @@ interface Menu {
 
                     Option = input.nextInt();
 
-                    if(Option==1){
-
-                        Operator op = Operator.get_instance();
-                        op.buildaccount();
-
-                    }
-
-                    System.out.println("Enter Your Accountnumber:");
-                    accountnumber = input.nextInt();
-
-
-
                     switch (Option) {
 
                         case 1:
+                            Operator op = Operator.get_instance();
+                            Person customer = op.FillPersonalinfo();
+                            Checkingaccountbuilder checkingaccountbuilder = new Checkingaccountbuilder();
+                            CheckingAccount checkingAccount = op.buildCheckingAccount(checkingaccountbuilder,customer);
+                            Query.InsertCustomersRecords(checkingAccount);
+                            System.out.println(checkingAccount);
+                            break;
 
+                        case 11:
+                             op = Operator.get_instance();
+                             customer = op.FillPersonalinfo();
+                            Savingaccountbuilder savingaccountbuilder = new Savingaccountbuilder();
+                            Savingaccount savingaccount = op.buildSavingaccount(savingaccountbuilder,customer);
+                            Query.InsertCustomersRecords(savingaccount);
+                            System.out.println(savingaccount);
 
                             break;
 
+
                         case 2:
+                            System.out.println("Enter Your Accountnumber:");
+                            accountnumber = input.nextInt();
                             Exceptions.accountexist(accountnumber);
                             Exceptions.Checkstate(accountnumber);
 
@@ -74,6 +79,8 @@ interface Menu {
                             break;
 
                         case 3:
+                            System.out.println("Enter Your Accountnumber:");
+                            accountnumber = input.nextInt();
 
                             Exceptions.accountexist(accountnumber);
                             Exceptions.Checkstate(accountnumber);
@@ -81,11 +88,15 @@ interface Menu {
                             break;
 
                         case 4:
+                            System.out.println("Enter Your Accountnumber:");
+                            accountnumber = input.nextInt();
 
                             Operations.Changepassword(accountnumber);
                             break;
 
                         case 5:
+                            System.out.println("Enter Your Accountnumber:");
+                            accountnumber = input.nextInt();
                             Exceptions.accountexist(accountnumber);
                             Exceptions.Checkstate(accountnumber);
                             System.out.println("Enter Your Destination Accountnumber:");
@@ -96,6 +107,8 @@ interface Menu {
                             break;
 
                         case 6:
+                            System.out.println("Enter Your Accountnumber:");
+                            accountnumber = input.nextInt();
                             Exceptions.accountexist(accountnumber);
                             Exceptions.Checkstate(accountnumber);
 
@@ -105,6 +118,8 @@ interface Menu {
                             break;
 
                         case 7:
+                            System.out.println("Enter Your Accountnumber:");
+                            accountnumber = input.nextInt();
                             
                             System.out.println("Enter Amount for Deposit:");
                             int deposit_amount = input.nextInt();
@@ -112,11 +127,15 @@ interface Menu {
                             break;
 
                         case 8:
+                            System.out.println("Enter Your Accountnumber:");
+                            accountnumber = input.nextInt();
 
                             Operations.Checkaccountbalance(accountnumber);
                             break;
 
                         case 9:
+                            System.out.println("Enter Your Accountnumber:");
+                            accountnumber = input.nextInt();
 
                             Operations.Changestate(accountnumber);
                             break;

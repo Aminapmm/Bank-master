@@ -3,484 +3,425 @@ package bank;
 import org.apache.commons.lang3.RandomStringUtils;
 import bank.time.*;
 
-import java.util.Scanner;
+class Person {
+
+    private String firstname;
+    private String lastname;
+    private String nationalid;
+    private String phonenumber;
+    private PersianDate birthdate;
 
 
- abstract class BankAccount {
+    private Person(Personbuilder personbuilder) {
 
-    private String Firstname;
-    private String Lastname;
-    private String Fathername;
-    private String NationalID;
-    private String Phonenumber;
-    private int Accountnumber;
-    private PersianDate Birthdate;
-    private String Accountype;
-    private int RamzeAvval;
-    private int RamzeDovom;
+        this.firstname = personbuilder.firstname;
+        this.lastname = personbuilder.lastname;
+        this.birthdate = personbuilder.birthdate;
+        this.nationalid = personbuilder.nationalid;
+        this.phonenumber = personbuilder.phonenumber;
+
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public String getNationalid() {
+        return nationalid;
+    }
+
+    public String getPhonenumber() {
+        return phonenumber;
+    }
+
+    public PersianDate getBirthdate() {
+        return birthdate;
+    }
+
+    @Override
+    public String toString(){
+        return String.format("Firstname: %s\nLastname: %s\nNationalID: %s\nPhonenumber: %s\nBirthdate: %s\n",firstname,lastname,nationalid,phonenumber,birthdate);
+    }
+
+    static class Personbuilder {
+
+        private String firstname;
+        private String lastname;
+        private String nationalid;
+        private String phonenumber;
+        private PersianDate birthdate;
+
+        public Personbuilder(String firstname, String lastname, String nationalid, String phonenumber, PersianDate birthdate) {
+            this.firstname = firstname;
+            this.lastname = lastname;
+            this.nationalid = nationalid;
+            this.phonenumber = phonenumber;
+            this.birthdate = birthdate;
+        }
+
+        public Personbuilder setFirstname(String firstname){
+            this.firstname=firstname;
+            return this;
+        }
+        public Personbuilder setLastname(String lastname){
+            this.lastname=lastname;
+            return this;
+        }
+
+        public Personbuilder setNatonalid(String nationalid){
+            this.nationalid=nationalid;
+            return this;
+        }
+
+        public Personbuilder setPhoneumber(String phonenumber){
+            this.phonenumber=phonenumber;
+            return this;
+        }
+
+        public Personbuilder setBirthdate(int yy, int mm, int dd){
+            this.birthdate=PersianDate.of(yy,mm,dd);
+            return this;
+        }
+
+        public Person getperson(){
+            return new Person(this);
+        }
+
+
+    }
+}
+
+interface Builder{
+    void setType();
+    void setRamzeavval();
+    void setRamzedovom();
+    void setAccountnumber();
+    void setAccountbalance(int accountbalance);
+    void setOwner(Person accountholder);
+}
+
+enum Status{
+    OPEN,
+    CLOSE,
+    SUSPENDED,
+}
+
+class CheckingAccount{
+
+    private Person Owner;
+    private int accountnumber;
+    private int ramzeavval;
+    private final String type;
     private int Accountbalance;
-    private PersianDate RegistrationDate;
-    private String Status;
-    private final int MIN_ACCOUNTBALANCE=50000;
-
-    static Scanner input = new Scanner(System.in);
+    private int ramzedovom;
+    private final   PersianDate Registerdate = PersianDate.now();
+    private Status state=Status.OPEN;
 
 
-    public BankAccount(builder b) {
-
-
-            this.Firstname = b.Firstname;
-
-
-            this.Lastname = b.Lastname;
-
-
-            this.Fathername = b.Fathername;
-
-
-            this.NationalID = b.NationalID;
-
-
-            this.Phonenumber = b.Phonenumber;
-
-
-            this.Birthdate = b.Birthdate;
-
-
-            this.Accountype = b.Accountype;
-
-            this.Accountnumber = b.Accountnumber;
-
-            if(b.Accountbalance>=MIN_ACCOUNTBALANCE) {
-                this.Accountbalance = b.Accountbalance;
-            }
-
-            this.RamzeAvval = b.RamzeAvval;
-
-
-            this.RamzeDovom = b.RamzeDovom;
-
-            this.RegistrationDate = b.Registrationdate;
-
-            this.Status = b.Status;
+    public CheckingAccount(Person person, int accountnumber, int Accountbalance, String type, int ramzeavval, int ramzedovom){
+        this.Owner=person;
+        this.accountnumber=accountnumber;
+        this.Accountbalance=Accountbalance;
+        this.type=type;
+        this.ramzeavval=ramzeavval;
+        this.ramzedovom=ramzedovom;
 
     }
 
-
-     String getFirstname () {
-        return this.Firstname;
+    public void setState(Status state){
+        this.state=state;
     }
 
-
-
-
-     String getLastname () {
-        return this.Lastname;
+    public Status getStatus(){
+        return  this.state;
     }
 
-
-
-     String getFathername () {
-        return this.Fathername;
+    @Override
+    public String toString(){
+        return Owner.toString() +  String.format("Accountnumber: %d\nRamzeavval: %d\nRamzedovom: %d\nType: %s\nAccountbalance: %d\n",accountnumber,ramzeavval,ramzedovom,type,Accountbalance);
     }
 
-
-
-    String getNationalID () {
-        return this.NationalID;
+    public void setRamzeavval(int ramzeavval) {
+        this.ramzeavval = ramzeavval;
     }
 
-
-
-     String getPhonenumber () {
-        return this.Phonenumber;
+    public void setAccountbalance(int accountbalance) {
+        Accountbalance = accountbalance;
     }
 
-
-     PersianDate getBirthdate () {
-        return this.Birthdate;
+    public void setRamzedovom(int ramzedovom) {
+        this.ramzedovom = ramzedovom;
     }
 
-     int getAccountnumber() {
-        return this.Accountnumber;
+    public Person getOwner() {
+        return Owner;
     }
 
-     String getAccountype () {
-        return this.Accountype;
+    public PersianDate getRegisterdate() {
+        return Registerdate;
     }
 
+    public int getAccountnumber() {
+        return accountnumber;
+    }
 
+    public int getRamzeavval() {
+        return ramzeavval;
+    }
 
-     int getAccountbalance () {
+    public String getAccountType() {
+        return type;
+    }
+
+    public int getAccountbalance() {
         return this.Accountbalance;
     }
 
+    public int getRamzedovom() {
+        return ramzedovom;
+    }
+}
+
+class Checkingaccountbuilder implements Builder {
+
+    private Person accountholder;
+    private int accountnumber;
+    private int ramzeavval;
+    private String type;
+    private int Accountbalance;
+    private int ramzedovom;
 
 
-     int getRamzeAvval () {
-        return this.RamzeAvval;
+
+    @Override
+    public void setAccountbalance(int accountbalance) {
+        this.Accountbalance = accountbalance;
     }
 
-     String getStatus(){return this.Status;}
-
-     int getRamzeDovom () {
-        return this.RamzeDovom;
-    }
-
-     PersianDate getRegistrationDate() {
-        return RegistrationDate;
+    @Override
+    public void setOwner(Person accountholder) {
+        this.accountholder = accountholder;
     }
 
 
-     static abstract class builder{
+    @Override
+    public void setAccountnumber() {
+        this.accountnumber = Integer.parseInt(RandomStringUtils.random(8,49,57,false,true));
 
-        private String Firstname;
-        private String Lastname;
-        private String Fathername;
-        private String NationalID;
-        private String Phonenumber;
-        private int Accountnumber;
-        private PersianDate Birthdate;
-        private PersianDate Registrationdate;
-        private String Accountype;
-        private int RamzeAvval;
-        private int RamzeDovom;
-        private int Accountbalance;
-        private String Status;
+    }
 
+    @Override
+    public void setRamzeavval() {
+        this.ramzeavval = Integer.parseInt(RandomStringUtils.random(4,49,57,false,true));
+    }
 
-         builder setStatus(){
-            this.Status="Open";
-            return this;
-        }
-         builder setFirstname(String firstname) {
-            Firstname = firstname;
-            return this;
-        }
+    @Override
+    public void setRamzedovom() {
+        this.ramzedovom = Integer.parseInt(RandomStringUtils.random(4,49,57,false,true));
+    }
 
-         builder setLastname(String lastname) {
-            Lastname = lastname;
-            return this;
-        }
+    @Override
+    public void setType() {
+        this.type = "Checking";
+    }
 
-         builder setFathername(String fathername) {
-            Fathername = fathername;
-            return this;
-        }
+    public CheckingAccount getAccount() {
+        return new CheckingAccount(accountholder, accountnumber, Accountbalance,type,ramzeavval,ramzedovom);
+    }
+}
 
-         builder setNationalID(String nationalID) {
-            NationalID = nationalID;
-            return this;
-        }
+class Savingaccountbuilder implements Builder {
 
-         builder setPhonenumber(String phonenumber) {
-            Phonenumber = phonenumber;
-            return this;
-        }
-
-         builder setAccountnumber(int accountnumber) {
-            Accountnumber = accountnumber;
-            return this;
-        }
-
-         builder setBirthdate(PersianDate birthdate) {
-            Birthdate = birthdate;
-            return this;
-        }
-
-         builder setRegistrationdate(PersianDate registrationdate) {
-            Registrationdate = registrationdate;
-            return this;
-        }
-
-         builder setAccountype(String accountype) {
-            Accountype = accountype;
-            return this;
-        }
-
-         builder setRamzeAvval(int ramzeAvval) {
-            RamzeAvval = ramzeAvval;
-            return this;
-        }
-
-         builder setRamzeDovom(int ramzeDovom) {
-            RamzeDovom = ramzeDovom;
-            return this;
-        }
-
-         builder setAccountbalance(int accountbalance) {
-            Accountbalance = accountbalance;
-            return this;
-        }
+    private Person accountholder;
+    private int accountnumber;
+    private int ramzeavval;
+    private String type;
+    private int Accountbalance;
+    private int ramzedovom;
+    private int Interestrate;
+    private int Monthlypayout;
+    private int Holdduration;
 
 
-        public  abstract BankAccount getAccount();
+    public void setType(String type) {
+        this.type = type;
+    }
 
+
+    public void setMonthlypayout() {
+        this.Monthlypayout = (Interestrate*Accountbalance*Holdduration/100)/12;
+    }
+
+
+    public void setHoldDuration(int time) {
+        this.Holdduration=time;
+    }
+
+
+
+    @Override
+    public void setType() {
+        this.type="Saving";
+    }
+
+
+    public void setInterestrate(int interestrate) {
+        this.Interestrate=interestrate;
+    }
+
+    @Override
+    public void setRamzeavval() {
+        this.ramzeavval = Integer.parseInt(RandomStringUtils.random(4,49,57,false,true));
+    }
+
+    @Override
+    public void setRamzedovom() {
+        this.ramzedovom = Integer.parseInt(RandomStringUtils.random(4,49,57,false,true));
+    }
+
+    @Override
+    public void setAccountnumber() {
+        this.accountnumber = Integer.parseInt(RandomStringUtils.random(8,49,57,false,true));
+    }
+
+    @Override
+    public void setAccountbalance(int accountbalance) {
+        this.Accountbalance=accountbalance;
+    }
+
+    @Override
+    public void setOwner(Person accountholder) {
+        this.accountholder = accountholder;
+    }
+
+    public Savingaccount getaccount(){
+        return new Savingaccount(accountholder,accountnumber,Accountbalance,ramzeavval,ramzedovom,Interestrate,Monthlypayout,Holdduration,type);
+    }
+
+}
+
+class Savingaccount{
+
+    private Person Owner;
+    private int accountnumber;
+    private int ramzeavval;
+    private String type;
+    private int Accountbalance;
+    private int ramzedovom;
+    private int Interestrate;
+    private int Monthlypayout;
+    private int Holdduration;
+    private final  PersianDate Registerdate = PersianDate.now();
+    private Status status=Status.OPEN;
+
+    public Savingaccount(Person accountholder, int accountnumber, int accountbalance, int ramzeavval, int ramzedovom, int interestrate, int monthlypayout, int holdduration, String type){
+
+        this.Owner=accountholder;
+        this.accountnumber=accountnumber;
+        this.Accountbalance=accountbalance;
+        this.type=type;
+        this.ramzeavval=ramzeavval;
+        this.ramzedovom=ramzedovom;
+        this.Interestrate=interestrate;
+        this.Monthlypayout=monthlypayout;
+        this.Holdduration=holdduration;
+    }
+
+
+    public void setStatus(Status status){
+        this.status=status;
+    }
+
+    public Status getStatus(){
+        return this.status;
+    }
+
+    public Person getOwner() {
+        return Owner;
+    }
+
+    public int getAccountnumber() {
+        return accountnumber;
+    }
+
+    public int getRamzeavval() {
+        return ramzeavval;
+    }
+
+    public PersianDate getRegisterdate(){
+        return this.Registerdate;
+    }
+
+    public String getAccounttype() {
+        return type;
+    }
+
+    public int getAccountbalance() {
+        return Accountbalance;
+    }
+
+    public int getRamzedovom() {
+        return ramzedovom;
+    }
+
+    public int getInterestrate() {
+        return Interestrate;
+    }
+
+    public int getMonthlypayout() {
+        return Monthlypayout;
+    }
+
+    public int getHoldduration() {
+        return Holdduration;
+    }
+
+    public void setRamzeavval(int ramzeavval) {
+        this.ramzeavval = ramzeavval;
+    }
+
+    public void setAccountbalance(int accountbalance) {
+        Accountbalance = accountbalance;
+    }
+
+    public void setRamzedovom(int ramzedovom) {
+        this.ramzedovom = ramzedovom;
+    }
+
+    public void setInterestrate(int interestrate) {
+        this.Interestrate = interestrate;
+    }
+
+    public void setMonthlypayout() {
+
+        this.Monthlypayout =  Interestrate*Accountbalance*Holdduration/1200;
+    }
+
+    public void setHoldduration(int holdduration) {
+        this.Holdduration = holdduration;
+    }
+    @Override
+    public String toString(){
+
+        return Owner.toString() +  String.format("Accountnumber: %d\nRamzeavval: %d\nRamzedovom: %d\nType: %s\nAccountbalance: %d\nInteresrrate: %d\nHoldDuration: %d\nMonthlypayout: %d\n",accountnumber,ramzeavval,ramzedovom,type,Accountbalance,Interestrate,Holdduration,Monthlypayout);
     }
 
 
 }
 
 
-     class Savingaccount extends BankAccount {
 
-        private int Timeperiod;
-        private int MONTHLY_PAYOUT_AMOUNT;
-        private int Interestrate;
 
-       private Savingaccount(Savingaccountbuilder Builder){
-           super(Builder);
-           this.Timeperiod=Builder.Timeperiod;
-           this.MONTHLY_PAYOUT_AMOUNT=Builder.MONTHLY_PAYOUT_AMOUNT;
-           this.Interestrate=Builder.Interestrate;
-       }
 
 
-         int getTimeperiod(){
-           return this.Timeperiod;
-       }
 
-         int getMONTHLY_PAYOUT_AMOUNT() {
-            return this.MONTHLY_PAYOUT_AMOUNT;
-        }
 
-         int getInterestrate(){
-           return this.Interestrate;
-        }
 
-         void setPayoutamount(){
-             this.MONTHLY_PAYOUT_AMOUNT = (this.Interestrate*super.getAccountbalance()*this.Timeperiod/100)/12;
-         }
 
-         @Override
-         public String toString(){
-           return String.format("Firstname: %s\nLastname: %s\nNationalID: %s\nBirthdate: %s\nPhonenumber: %s\nAccountnumber: %d\nAccountbalance: %d\nMonthlyPayout: %d\nInterestrate: %d\nHoldDuration: %d\nRamze-Avval: %d\nRamze-Dovom: %d\nRegisterdate: %s\n",this.getFirstname(),this.getLastname(),this.getNationalID(),this.getBirthdate(),this.getPhonenumber(),this.getAccountnumber(),this.getAccountbalance(),this.getMONTHLY_PAYOUT_AMOUNT(),this.getInterestrate(),this.getTimeperiod(),this.getRamzeAvval(),this.getRamzeDovom(),this.getRegistrationDate());
-         }
-
-        static class Savingaccountbuilder extends BankAccount.builder {
-
-           private int Timeperiod;
-           private int MONTHLY_PAYOUT_AMOUNT;
-           private int Interestrate;
-
-
-             Savingaccountbuilder setpayoutamount(int amount){
-                this.MONTHLY_PAYOUT_AMOUNT=amount;
-                return this;
-            }
-
-             Savingaccountbuilder setTimeperiod(int timeperiod){
-
-               this.Timeperiod = timeperiod;
-               return this;
-
-           }
-
-            //Annual Interest = The formula for Simple Interest (SI) is “principal x rate of interest x time period divided by 100” or (P x Rx T/100).
-            //Monthly-interest = Annual/12
-
-            @Override
-            public Savingaccountbuilder setFirstname(String firstname) {
-               super.setFirstname(firstname);
-               return this;
-            }
-
-            @Override
-            public Savingaccountbuilder setLastname(String lastname) {
-                 super.setLastname(lastname);
-                 return this;
-            }
-
-            @Override
-            public Savingaccountbuilder setFathername(String fathername) {
-                 super.setFathername(fathername);
-                 return this;
-            }
-
-            @Override
-            public Savingaccountbuilder setNationalID(String nationalID) {
-                 super.setNationalID(nationalID);
-                 return this;
-            }
-
-            @Override
-            public Savingaccountbuilder setPhonenumber(String phonenumber) {
-                super.setPhonenumber(phonenumber);
-                return this;
-            }
-
-
-             Savingaccountbuilder setAccountnumber() {
-                int accountnumber = Integer.parseInt(RandomStringUtils.randomNumeric(6));
-                super.setAccountnumber(accountnumber);
-                return this;
-            }
-
-             Savingaccountbuilder setBirthdate(int yy,int mm,int dd) {
-                 PersianDate birthdate = PersianDate.of(yy, mm, dd);
-                 super.setBirthdate(birthdate);
-                 return this;
-            }
-
-             Savingaccountbuilder setRegistrationdate() {
-                PersianDate registrationdate = PersianDate.now();
-                super.setRegistrationdate(registrationdate);
-                return this;
-            }
-
-
-             Savingaccountbuilder setAccountype() {
-                super.setAccountype("SAVING");
-                return this;
-            }
-
-             Savingaccountbuilder setRamzeAvval() {
-
-                 int ramzeAvval = Integer.parseInt(RandomStringUtils.randomNumeric(4));
-                 super.setRamzeAvval(ramzeAvval);
-                 return this;
-            }
-
-             Savingaccountbuilder setRamzeDovom() {
-
-                 int ramzeDovom = Integer.parseInt(RandomStringUtils.randomNumeric(4));
-                 super.setRamzeDovom(ramzeDovom);
-                 return this;
-            }
-
-            @Override
-            public Savingaccountbuilder setAccountbalance(int accountbalance) {
-                 super.setAccountbalance(accountbalance);
-                 return this;
-            }
-
-
-             Savingaccountbuilder setInterestrate(int interestrate) {
-                this.Interestrate=interestrate;
-                 return this;
-            }
-
-            public Savingaccountbuilder setStatus(){
-                super.setStatus();
-                return this;
-            }
-
-
-            @Override
-            public Savingaccount getAccount() {
-                Savingaccount savingaccount = new Savingaccount(this);
-                return savingaccount;
-            }
-        }
-
-
-    }
-
-    class CheckingAccount extends BankAccount{
-
-
-        private CheckingAccount(Checkingbuilder Builder){
-            super(Builder);
-        }
-
-        @Override
-        public String toString(){
-            return String.format("Firstname: %s\nLastname: %s\nNationalID: %s\nBirthdate: %s\nAccountnumber: %d\nRamze-Avval: %d\nRamze-Dovom: %d\nRegisterdate: %s\nAccountbalance: %d \nPhonenumber: %s\n ",this.getFirstname(),this.getLastname(),this.getNationalID(),this.getBirthdate(),this.getAccountnumber(),this.getRamzeAvval(),this.getRamzeDovom(),this.getRegistrationDate(),this.getAccountbalance(),this.getPhonenumber());
-        }
-
-        static class Checkingbuilder extends builder{
-
-
-            @Override
-            public Checkingbuilder setFirstname(String firstname) {
-                 super.setFirstname(firstname);
-                 return this;
-            }
-
-            @Override
-            public Checkingbuilder setLastname(String lastname) {
-                 super.setLastname(lastname);
-                 return this;
-            }
-
-            @Override
-            public Checkingbuilder setFathername(String fathername) {
-                super.setFathername(fathername);
-                return this;
-            }
-
-            @Override
-            public Checkingbuilder setNationalID(String nationalID) {
-                super.setNationalID(nationalID);
-                return this;
-            }
-
-            @Override
-            public Checkingbuilder setPhonenumber(String phonenumber) {
-                 super.setPhonenumber(phonenumber);
-                 return this;
-            }
-
-             Checkingbuilder setAccountnumber() {
-
-                int accountnumber = Integer.parseInt(RandomStringUtils.randomNumeric(6));
-                super.setAccountnumber(accountnumber);
-                return this;
-            }
-
-
-             Checkingbuilder setBirthdate(int yy,int mm,int dd) {
-                PersianDate birthdate = PersianDate.of(yy,mm,dd);
-                super.setBirthdate(birthdate);
-                return this;
-            }
-
-            public Checkingbuilder setStatus(){
-                super.setStatus();
-                return this;
-            }
-
-
-            Checkingbuilder setRegistrationdate() {
-
-                 PersianDate registrationdate = PersianDate.now();
-                 super.setRegistrationdate(registrationdate);
-                 return this;
-            }
-
-            public Checkingbuilder setAccountype() {
-                 super.setAccountype("CHECKING");
-                 return this;
-            }
-
-
-             Checkingbuilder setRamzeAvval() {
-
-                int ramzeAvval = Integer.parseInt(RandomStringUtils.randomNumeric(4));
-                super.setRamzeAvval(ramzeAvval);
-                return this;
-            }
-
-             Checkingbuilder setRamzeDovom() {
-
-                int ramzeDovom = Integer.parseInt(RandomStringUtils.randomNumeric(4));
-                super.setRamzeDovom(ramzeDovom);
-                return this;
-            }
-
-            @Override
-            public Checkingbuilder setAccountbalance(int accountbalance) {
-                super.setAccountbalance(accountbalance);
-                return this;
-            }
-
-            @Override
-            public CheckingAccount getAccount(){
-                return new CheckingAccount(this);
-            }
-
-        }
-    }
 
 
 

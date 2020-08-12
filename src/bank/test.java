@@ -18,10 +18,7 @@ import static java.lang.System.out;
 public class test {
 
     public static void main(String[] args) throws SQLException, ServiceNotFoundException {
-    CustomersMenu menu = new CustomersMenu();
-        Savingaccount.Savingaccountbuilder b = new Savingaccount.Savingaccountbuilder();
-        CheckingAccount.Checkingbuilder c = new CheckingAccount.Checkingbuilder();
-    out.println(c.getClass().getCanonicalName());
+
 
 
 

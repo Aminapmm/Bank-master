@@ -14,8 +14,6 @@ import java.util.*;
 
 import static java.lang.System.*;
 
-//TODO:WHEN INSERTING RECORDS IN ACCOUNT TABLES CHECK FOR EXISTANCE OF THE SAME RECORD...AND THEN TAKE THE ACTION
-
 public class Query{
 
     //static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
@@ -285,26 +283,26 @@ public class Query{
                 query = "INSERT INTO ACCOUNTHOLDERS (FIRSTNAME,LASTNAME,NATIONALID,ACCOUNTNUMBER,ACCOUNTTYPE,BIRTHDATE,PHONENUMBER) VALUES (?,?,?,?,?,?,?)";
                 pstmt = conn.prepareStatement(query);
 
-                pstmt.setString(1,account.getFirstname());
-                pstmt.setString(2,account.getLastname());
-                pstmt.setString(3,account.getNationalID());
+                pstmt.setString(1,account.getOwner().getFirstname());
+                pstmt.setString(2,account.getOwner().getLastname());
+                pstmt.setString(3,account.getOwner().getNationalid());
                 pstmt.setInt(4,account.getAccountnumber());
-                pstmt.setString(5,account.getAccountype());
-                pstmt.setDate(6,Date.valueOf(account.getBirthdate().toString()));
-                pstmt.setString(7,account.getPhonenumber());
+                pstmt.setString(5,account.getAccountType());
+                pstmt.setDate(6,Date.valueOf(account.getOwner().getBirthdate().toString()));
+                pstmt.setString(7,account.getOwner().getPhonenumber());
 
                 pstmt.executeUpdate();
 
                 query = "INSERT INTO Checkingaccounts (NATIONALID,ACCOUNTNUMBER,RAMZEAVVAL,RAMZEDOVOM,ACCOUNTBALANCE,REGISTERDATE,STATUS) VALUES(?,?,?,?,?,?,?)";
                 pstmt = conn.prepareStatement(query);
 
-                pstmt.setString(1,account.getNationalID());
+                pstmt.setString(1,account.getOwner().getNationalid());
                 pstmt.setInt(2,account.getAccountnumber());
-                pstmt.setInt(3,account.getRamzeAvval());
-                pstmt.setInt(4,account.getRamzeDovom());
+                pstmt.setInt(3,account.getRamzeavval());
+                pstmt.setInt(4,account.getRamzedovom());
                 pstmt.setInt(5,account.getAccountbalance());
-                pstmt.setDate(6,Date.valueOf(account.getRegistrationDate().toString()));
-                pstmt.setString(7,account.getStatus());
+                pstmt.setDate(6,Date.valueOf(account.getRegisterdate().toString()));
+                pstmt.setString(7,account.getStatus().toString());
 
 
                 status=(pstmt.executeUpdate()==1?true:false);
@@ -323,13 +321,13 @@ public class Query{
 
         PreparedStatement pstmt = conn.prepareStatement(query);
 
-        pstmt.setString(1,account.getFirstname());
-        pstmt.setString(2,account.getLastname());
-        pstmt.setString(3,account.getNationalID());
-        pstmt.setDate(4,Date.valueOf(account.getBirthdate().toString()));
-        pstmt.setString(5,account.getPhonenumber());
+        pstmt.setString(1,account.getOwner().getFirstname());
+        pstmt.setString(2,account.getOwner().getLastname());
+        pstmt.setString(3,account.getOwner().getNationalid());
+        pstmt.setDate(4,Date.valueOf(account.getOwner().getBirthdate().toString()));
+        pstmt.setString(5,account.getOwner().getPhonenumber());
         pstmt.setInt(6,account.getAccountnumber());
-        pstmt.setString(7,account.getAccountype());
+        pstmt.setString(7,account.getAccounttype());
 
         pstmt.executeUpdate();
 
@@ -337,16 +335,16 @@ public class Query{
         String query1 = "INSERT INTO SAVINGACCOUNTS (NATIONALID,ACCOUNTNUMBER,RAMZEAVVAL,RAMZEDOVOM,ACCOUNTBALANCE,REGISTERDATE,MONTHLYPAYOUT,INTERESTRATE,HOLDDURATION,STATUS) VALUES (?,?,?,?,?,?,?,?,?,?)";
         pstmt = conn.prepareStatement(query1);
 
-        pstmt.setString(1,account.getNationalID());
+        pstmt.setString(1,account.getOwner().getNationalid());
         pstmt.setInt(2,account.getAccountnumber());
-        pstmt.setInt(3,account.getRamzeAvval());
-        pstmt.setInt(4,account.getRamzeDovom());
+        pstmt.setInt(3,account.getRamzeavval());
+        pstmt.setInt(4,account.getRamzedovom());
         pstmt.setInt(5,account.getAccountbalance());
-        pstmt.setDate(6,Date.valueOf(account.getRegistrationDate().toString()));
-        pstmt.setInt(7,account.getMONTHLY_PAYOUT_AMOUNT());
+        pstmt.setDate(6,Date.valueOf(account.getRegisterdate().toString()));
+        pstmt.setInt(7,account.getMonthlypayout());
         pstmt.setInt(8,account.getInterestrate());
-        pstmt.setInt(9,account.getTimeperiod());
-        pstmt.setString(10,account.getStatus());
+        pstmt.setInt(9,account.getHoldduration());
+        pstmt.setString(10,account.getStatus().toString());
 
 
         status=(pstmt.executeUpdate()==1?true:false);

@@ -198,6 +198,10 @@ public class Operations {
 
     }
 
+    public static void main(String[] args) throws ServiceNotFoundException, SQLException {
+        Interestpayout();
+    }
+
     public static void Checkaccountbalance(int Accountnumber) throws SQLException {
 
         int accountbalance = Query.ShowInformation(Accountnumber).getInt("Accountbalance");
