@@ -52,7 +52,7 @@ public class Operations {
 
                             Accountbalance=Query.ShowInformation(Destination).getInt("accountbalance")+amount;
 
-                            Query.UpdateRecords(Destination,"ACCOUNTBALANCE",Integer.toString(Accountbalance+amount));
+                            Query.UpdateRecords(Destination,"ACCOUNTBALANCE",Integer.toString(Accountbalance));
                             Query.InsertTransactionsRecord(Destination,"TRANSFER",amount,accountnumber,0,String.format("%d Tomans Has been Transfered To This Account.",amount),Accountbalance);
                             System.out.println(receipt);
 
@@ -91,10 +91,7 @@ public class Operations {
                     Query.InsertTransactionsRecord(accountnumber,"Withdraw",amount,0,0,description,AccountBalance);
 
                     Withdraw w = new Withdraw(accountnumber,amount,AccountBalance);
-                    w.setReceiptDate();
-                    w.setReceiptTime();
                     w.setDESCRIPTION("Succesfull");
-
                     System.out.println(w);
             }
 

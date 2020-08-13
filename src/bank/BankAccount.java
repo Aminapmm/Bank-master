@@ -95,20 +95,20 @@ class Person {
     }
 }
 
-interface Builder{
-    void setType();
-    void setRamzeavval();
-    void setRamzedovom();
-    void setAccountnumber();
-    void setAccountbalance(int accountbalance);
-    void setOwner(Person accountholder);
-}
+    interface Builder{
+        void setType();
+        void setRamzeavval();
+        void setRamzedovom();
+        void setAccountnumber();
+        void setAccountbalance(int accountbalance);
+        void setOwner(Person accountholder);
+    }
 
-enum Status{
-    OPEN,
-    CLOSE,
-    SUSPENDED,
-}
+    enum Status{
+        OPEN,
+        CLOSE,
+        SUSPENDED,
+    }
 
 class CheckingAccount{
 

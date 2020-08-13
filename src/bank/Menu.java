@@ -101,6 +101,7 @@ interface Menu {
                             Exceptions.Checkstate(accountnumber);
                             System.out.println("Enter Your Destination Accountnumber:");
                             int Dest = input.nextInt();
+                            Exceptions.accountexist(Dest);
                             System.out.println("Enter The Amount for Transfer:");
                             int Amount = input.nextInt();
                             Operations.Transfer(accountnumber, Dest, Amount);

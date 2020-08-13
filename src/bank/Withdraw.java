@@ -10,6 +10,8 @@ public class Withdraw extends TRANSACTION {
 		this.setAccountnumber(ACCOUNTNUMBER);
 		this.setAmount(AMOUNT);
 		this.setAccountBalance(AccountBalance);
+		super.setReceiptDate();
+		super.setReceiptTime();
 
 	}
 

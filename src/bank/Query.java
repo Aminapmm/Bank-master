@@ -26,7 +26,7 @@ public class Query{
 
         Connection conn = DriverManager.getConnection(DB_URL,DB_USERNAME,DB_PASSWORD);
         String query = "SELECT * FROM OPERATORS WHERE USERNAME =? AND PASSWORD = ? ";
-        PreparedStatement pstmt = conn.prepareStatement(query);
+        PreparedStatement pstmt = conn.prepareStatement(query,ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
         pstmt.setString(1,username);
         pstmt.setInt(2,password);
         ResultSet rs = pstmt.executeQuery();
